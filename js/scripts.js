@@ -1,6 +1,5 @@
 var iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
 var ff = navigator.userAgent.indexOf('Firefox') > 0;
-var tap = ('ontouchstart' in window || navigator.msMaxTouchPoints) ? 'touchstart' : 'mousedown';
 if (iOS) document.body.classList.add('iOS');
 
 var fireworks = (function() {
@@ -121,11 +120,23 @@ var fireworks = (function() {
     }
   });
 
-  document.addEventListener(tap, function(e) {
+  var onClick = function(e) {
+    if (e.type === 'touchstart') {
+      document.removeEventListener('mousedown', onClick, false);
+      document.addEventListener('mousedown', restoreMouse, false);
+    }
     updateCoords(e);
     animateParticules(x, y);
     ga('send', 'event', 'Fireworks', 'Click');
-  }, false);
+  }
+
+  var restoreMouse = function(e) {
+    onClick(e);
+    document.addEventListener('mousedown', onClick, false);
+  }
+
+  document.addEventListener('touchstart', onClick, false);
+  document.addEventListener('mousedown', onClick, false);
 
   window.addEventListener('resize', setCanvasSize, false);
 
