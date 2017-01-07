@@ -24,7 +24,7 @@
 
   // Defaults
 
-  const defaultAnimationSettings = {
+  const defaultInstanceSettings = {
     begin: undefined,
     update: undefined,
     complete: undefined,
@@ -118,6 +118,7 @@
         for (; currentSample !== lastSample && sampleValues[currentSample] <= aX; ++currentSample) {
           intervalStart += kSampleStepSize;
         }
+
         --currentSample;
 
         const dist = (aX - sampleValues[currentSample]) / (sampleValues[currentSample + 1] - sampleValues[currentSample]);
@@ -149,19 +150,20 @@
 
   const easings = (() => {
 
-    function elastic(t, f) {
-      return t === 0 || t === 1 ? t :
-      -Math.pow(2, 8 * (t - 1)) * Math.sin(((t - 1) * (Math.min(Math.max(f, 0), 1000) / 8.25) - 7.5) * Math.PI / 15);
-    }
+    const names = ['Quad', 'Cubic', 'Quart', 'Quint', 'Sine', 'Expo', 'Circ', 'Back', 'Elastic'];
 
-    const names = ['', 'Quad', 'Cubic', 'Quart', 'Quint', 'Sine', 'Expo', 'Circ', 'Back', 'Elastic'];
+    // Elastic easing adapted from jQueryUI http://api.jqueryui.com/easings/
+
+    function elastic(t, p) {
+      return t === 0 || t === 1 ? t :
+      -Math.pow(2, 10 * (t - 1)) * Math.sin((((t - 1) - (p / (Math.PI * 2.0) * Math.asin(1))) * (Math.PI * 2)) / p );
+    }
 
     // Approximated Penner equations http://matthewlein.com/ceaser/
     // © Matthew Lein
 
     const equations = {
       In: [
-        [0.420, 0.000, 1.000, 1.000], /* In */
         [0.550, 0.085, 0.680, 0.530], /* InQuad */
         [0.550, 0.055, 0.675, 0.190], /* InCubic */
         [0.895, 0.030, 0.685, 0.220], /* InQuart */
@@ -172,7 +174,6 @@
         [0.600, -0.280, 0.735, 0.045], /* InBack */
         elastic /* InElastic */
       ], Out: [
-        [0.000, 0.000, 0.580, 1.000], /* Out */
         [0.250, 0.460, 0.450, 0.940], /* OutQuad */
         [0.215, 0.610, 0.355, 1.000], /* OutCubic */
         [0.165, 0.840, 0.440, 1.000], /* OutQuart */
@@ -183,7 +184,6 @@
         [0.175, 0.885, 0.320, 1.275], /* OutBack */
         (t, f) => 1 - elastic(1 - t, f) /* OutElastic */
       ], InOut: [
-        [0.420, 0.000, 0.580, 1.000], /* InOut */
         [0.455, 0.030, 0.515, 0.955], /* InOutQuad */
         [0.645, 0.045, 0.355, 1.000], /* InOutCubic */
         [0.770, 0.000, 0.175, 1.000], /* InOutQuart */
@@ -197,8 +197,7 @@
     }
 
     let functions = {
-      linear: bezier(0.250, 0.250, 0.750, 0.750),
-      ease: bezier(0.250, 0.100, 0.250, 1.000)
+      linear: bezier(0.250, 0.250, 0.750, 0.750)
     }
 
     for (let type in equations) {
@@ -397,6 +396,12 @@
     return is.obj(val) && objectHas(val, 'totalLength');
   }
 
+  function setDashoffset(el) {
+    const pathLength = el.getTotalLength();
+    el.setAttribute('stroke-dasharray', pathLength);
+    return pathLength;
+  }
+
   function getPath(path, percent) {
     const el = is.str(path) ? selectString(path)[0] : path;
     const p = percent || 100;
@@ -457,30 +462,28 @@
 
   // Properties
 
-  function normalizePropertyTweens(tween, settings, propIndex) {
-    let t = tween;
-    let s = settings;
-    const l = arrayLength(t);
-    if (is.arr(t)) {
+  function normalizePropertyTweens(prop, tweenSettings, propIndex) {
+    const l = arrayLength(prop);
+    if (is.arr(prop)) {
       // // Duration divided by the number of tweens
-      if (!is.fnc(settings.duration) && l > 2 && !propIndex) s.duration = settings.duration / l;
+      if (!is.fnc(tweenSettings.duration) && l > 2 && !propIndex) tweenSettings.duration = tweenSettings.duration / l;
       // Transform [from, to] values shorthand to a valid tween value
-      if ((l === 2 && !is.arr(t[0]) && !is.obj(t[0]))) t = {value: tween};
+      if ((l === 2 && !is.arr(prop[0]) && !is.obj(prop[0]))) prop = {value: prop};
     }
-    return toArray(t).map((v, i) => {
+    return toArray(prop).map((v, i) => {
       // Default default value should be applied only on the first tween
-      const delay = !i ? s.delay : 0;
+      const delay = !i ? tweenSettings.delay : 0;
       // Use path object as a tween value
       let obj = is.obj(v) && !isPath(v) ? v : {value: v};
       // Set default delay value
       obj.delay = obj.delay || delay;
       return obj;
-    }).map(k => mergeObjects(k, s));
+    }).map(k => mergeObjects(k, tweenSettings));
   }
 
-  function getProperties(animationSettings, tweenSettings, params) {
+  function getProperties(instanceSettings, tweenSettings, params) {
     let properties = [];
-    const settings = mergeObjects(animationSettings, tweenSettings);
+    const settings = mergeObjects(instanceSettings, tweenSettings);
     for (let p in params) {
       if (!objectHas(settings, p) && p !== 'targets') {
         properties.push({
@@ -533,6 +536,7 @@
       tween.start = previousTween ? previousTween.end + tween.delay : tween.delay;
       tween.end = tween.start + tween.duration;
       tween.easing = normalizeEasing(tween.easing);
+      tween.elasticity = (1000 - Math.min(Math.max(tween.elasticity, 1), 999)) / 1000;
       if (is.col(tween.from.original)) tween.round = 1;
       previousTween = tween;
       return tween;
@@ -627,28 +631,28 @@
         instance.animatables[id].target.style.transform = transforms[id].join(' ');
       }
     }
-    if (instance.settings.update) instance.settings.update(instance);
+    if (instance.update) instance.update(instance);
     if (instance.children) syncInstanceChildren(instance, currentTime);
   }
 
   function createNewInstance(params = {}) {
-    const animationSettings = replaceObjectProps(defaultAnimationSettings, params);
+    const instanceSettings = replaceObjectProps(defaultInstanceSettings, params);
     const tweenSettings = replaceObjectProps(defaultTweenSettings, params);
     const animatables = getAnimatables(params.targets);
-    const properties = getProperties(animationSettings, tweenSettings, params);
+    const properties = getProperties(instanceSettings, tweenSettings, params);
     const animations = getAnimations(animatables, properties);
-    return {
-      settings: animationSettings,
+    return mergeObjects(instanceSettings, {
       animatables: animatables,
       animations: animations,
       duration: arrayLength(animations) ? Math.max.apply(Math, animations.map((anim) => anim.duration )) : tweenSettings.duration,
       delay: arrayLength(animations) ? Math.min.apply(Math, animations.map((anim) => anim.delay )) : tweenSettings.delay,
       currentTime: 0,
       progress: 0,
-      completed: false,
+      paused: true,
       began: false,
-      loop: animationSettings.loop
-    }
+      completed: false,
+      remaining: instanceSettings.loop
+    })
   }
 
   // Core
@@ -677,7 +681,6 @@
 
     let startTime, lastTime = 0;
     let instance = createNewInstance(params);
-    let settings = instance.settings;
 
     instance.tick = function(now) {
       if (!startTime) startTime = now;
@@ -686,18 +689,18 @@
       setInstanceProgress(instance, instanceTime);
       if (!instance.began && instanceTime >= instance.delay) {
         instance.began = true;
-        if (settings.begin) settings.begin(instance);
+        if (instance.begin) instance.begin(instance);
       }
       if (instanceTime >= instance.duration) {
-        if (instance.loop && !isNaN(parseFloat(instance.loop))) instance.loop--;
-        if (instance.loop) {
+        if (instance.remaining && !isNaN(parseFloat(instance.remaining))) instance.remaining--;
+        if (instance.remaining) {
           startTime = now;
-          if (settings.direction === 'alternate') toggleInstanceDirection(instance);
+          if (instance.direction === 'alternate') toggleInstanceDirection(instance);
         } else {
           instance.completed = true;
           instance.began = false;
           instance.pause();
-          if (settings.complete) settings.complete(instance);
+          if (instance.complete) instance.complete(instance);
         }
         lastTime = 0;
       }
@@ -711,17 +714,18 @@
     instance.pause = function() {
       const i = running.indexOf(instance);
       if (i > -1) running.splice(i, 1);
+      instance.paused = true;
     }
 
-    instance.play = function(params) {
-      instance.pause();
-      if (params) instance = mergeObjects(createNewInstance(mergeObjects(params, instance.settings)), instance);
+    instance.play = function() {
+      if (!instance.paused) return;
+      instance.paused = false;
       startTime = 0;
       lastTime = instance.completed ? 0 : adjustInstanceTime(instance, instance.currentTime);
-      if (settings.direction === 'reverse' && !instance.reversed) toggleInstanceDirection(instance);
-      if (settings.direction === 'alternate') {
-        if (instance.reversed && !instance.loop % 2) toggleInstanceDirection(instance);
-        if (!instance.loop) instance.loop = 2;
+      if (instance.direction === 'reverse' && !instance.reversed) toggleInstanceDirection(instance);
+      if (instance.direction === 'alternate') {
+        if (instance.reversed && !instance.remaining % 2) toggleInstanceDirection(instance);
+        if (!instance.remaining) instance.remaining = 2;
       }
       running.push(instance);
       if (!raf) engine();
@@ -732,12 +736,12 @@
       if (instance.reversed) toggleInstanceDirection(instance);
       instance.completed = false;
       instance.began = false;
-      instance.loop = settings.loop;
+      instance.remaining = instance.loop;
       instance.seek(0);
       instance.play();
     }
 
-    if (settings.autoplay) instance.restart();
+    if (instance.autoplay) instance.restart();
     instances.push(instance);
 
     return instance;
@@ -782,6 +786,7 @@
   anime.remove = removeTargets;
   anime.getValue = getOriginalTargetValue;
   anime.path = getPath;
+  anime.pathDashoffset = setDashoffset;
   anime.bezier = bezier;
   anime.easings = easings;
   anime.timeline = timeline;

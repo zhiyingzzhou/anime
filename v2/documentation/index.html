@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
   <link href="assets/css/anime-theme.css" rel="stylesheet">
   <link href="assets/css/styles.css" rel="stylesheet">
-  <script src="../anime.min.js"></script>
+  <script src="../anime.js"></script>
 </head>
 <body>
   <div class="content">
@@ -283,61 +283,6 @@ var JSarray = anime({
   <header>
     <h2 class="demos-title">Easings</h2>
   </header>
-
-<div id="basicEasings" class="demo">
-  <h3 class="demo-title">Basic</h3>
-  <div class="demo-content">
-    <div class="line">
-      <div class="small square shadow"></div>
-      <div class="small square linear"></div>
-    </div>
-    <div class="line">
-      <div class="small square shadow"></div>
-      <div class="small square ease"></div>
-    </div>
-    <div class="line">
-      <div class="small square shadow"></div>
-      <div class="small square in"></div>
-    </div>
-    <div class="line">
-      <div class="small square shadow"></div>
-      <div class="small square out"></div>
-    </div>
-    <div class="line">
-      <div class="small square shadow"></div>
-      <div class="small square inOut"></div>
-    </div>
-  </div>
-<script>var linear = anime({
-  targets: '#basicEasings .linear',
-  translateX: 250,
-  easing: 'linear'
-});
-var ease = anime({
-  targets: '#basicEasings .ease',
-  translateX: 250,
-  easing: 'ease'
-});
-var easeIn = anime({
-  targets: '#basicEasings .in',
-  translateX: 250,
-  easing: 'easeIn'
-});
-var easeOut = anime({
-  targets: '#basicEasings .out',
-  translateX: 250,
-  easing: 'easeOut'
-});
-var easeInOut = anime({
-  targets: '#basicEasings .inOut',
-  translateX: 250,
-  easing: 'easeInOut'
-});
-</script>
-<script>var basicEasings = anime.timeline();
-basicEasings.add([linear, ease, easeIn, easeOut, easeInOut]);
-</script>
-</div>
 
 <div id="penner" class="demo">
   <h3 class="demo-title">Penner equations</h3>
@@ -868,7 +813,7 @@ var objectPropDemo = anime({
   targets: '#colors .hex',
   translateX: 250,
   backgroundColor: '#D1FA9E',
-  easing: 'ease',
+  easing: 'linear',
   duration: 2000
 });
 
@@ -876,7 +821,7 @@ var rgb = anime({
   targets: '#colors .rgb',
   translateX: 250,
   backgroundColor: 'rgb(138, 251, 177)',
-  easing: 'ease',
+  easing: 'linear',
   duration: 2000
 });
 
@@ -884,7 +829,7 @@ var hsl = anime({
   targets: '#colors .hsl',
   translateX: 250,
   backgroundColor: 'hsl(171, 68%, 69%)',
-  easing: 'ease',
+  easing: 'linear',
   duration: 2000
 });
 </script>
@@ -1381,7 +1326,7 @@ var begin = anime({
 });
 </script>
 <script>
-begin.settings.update = function(anim) {
+begin.update = function(anim) {
   if (!anim.began) {
     beganLogEl.value = 'began : ' + anim.began;
   }
@@ -1409,7 +1354,7 @@ var complete = anime({
 });
 </script>
 <script>
-complete.settings.update = function(anim) {
+complete.update = function(anim) {
   if (!anim.completed) {
     completedLogEl.value = 'completed : ' + anim.completed;
   }
@@ -1451,7 +1396,7 @@ var outsideCallbacks = anime({
   duration: function(el, i) { return 500 + (i * 500); }
 });
 
-outsideCallbacks.settings.update = function(anim) {
+outsideCallbacks.update = function(anim) {
   if (!anim.began) {
     updateLogEl2.value = 'starts in ' + Math.round(anim.delay - anim.currentTime) + 'ms';
     beganLogEl2.value = '';
@@ -1462,8 +1407,8 @@ outsideCallbacks.settings.update = function(anim) {
     completedLogEl2.value = '';
   }
 }
-outsideCallbacks.settings.begin =  function() { beganLogEl2.value = 'began'; };
-outsideCallbacks.settings.complete = function() { completedLogEl2.value = 'completed'; };
+outsideCallbacks.begin =  function() { beganLogEl2.value = 'began'; };
+outsideCallbacks.complete = function() { completedLogEl2.value = 'completed'; };
 
 </script>
 </div>
@@ -1526,5 +1471,8 @@ var motionPath = anime({
   <script src="assets/js/highlight.pack.js"></script>
   <script src="assets/js/beautify-html.js"></script>
   <script src="assets/js/scripts.js"></script>
+  <script>
+    console.log(anime.active);
+  </script>
 </body>
 </html>
