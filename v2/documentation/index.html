@@ -130,10 +130,10 @@ var JSarray = anime({
 </article>
 <!-- -->
 
-<!-- PROPERTIES -->
+<!-- ANIMATABLE PROPERTIES -->
 <article id="properties" class="color-04">
 <header>
-  <h2 class="demos-title">Properties</h2>
+  <h2 class="demos-title">Animatable properties</h2>
 </header>
 
 <div id="cssDemo" class="demo">
@@ -214,36 +214,11 @@ var objectPropDemo = anime({
 </article>
 <!-- -->
 
-<!-- SETTINGS -->
-<article id="basicSettings" class="color-02">
+<!-- PROPERTY PARAMETERS -->
+<article id="propertyParameters" class="color-02">
   <header>
-    <h2 class="demos-title">Basic settings</h2>
+    <h2 class="demos-title">Property parameters</h2>
   </header>
-
-<div id="defaultSettings" class="demo">
-  <h3 class="demo-title">Default settings</h3>
-  <div class="demo-content">
-    <div class="square shadow"></div>
-    <div class="square el"></div>
-  </div>
-<script>var defaultSettings = anime({
-  targets: '#defaultSettings .el',
-  translateX: 250
-});
-
-/* Default basic settings are :
-
-  duration: 1000,
-  delay: 0,
-  easing: 'easeOutElastic',
-  elasticity: 500,
-  loop: 0,
-  direction: 'normal',
-
-*/
-
-</script>
-</div>
 
 <div id="duration" class="demo">
   <h3 class="demo-title">Duration</h3>
@@ -355,6 +330,49 @@ var objectPropDemo = anime({
   targets: '#infiniteLoop .el',
   translateX: 250,
   loop: true
+});
+</script>
+</div>
+
+<div id="easing" class="demo">
+  <h3 class="demo-title">Easing</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var easing = anime({
+  targets: '#easing .el',
+  translateX: 250,
+  easing: 'easeInOutQuart'
+});
+</script>
+</div>
+
+<div id="specificPropertyParameters" class="demo">
+  <h3 class="demo-title">Specific property parameters</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var specificPropertyParameters = anime({
+  targets: '#specificPropertyParameters .el',
+  translateX: {
+    value: 250,
+    duration: 1000
+  },
+  rotate: {
+    value: 360,
+    duration: 1800,
+    easing: 'easeInOutSine'
+  },
+  scale: {
+    value: 2,
+    duration: 2000,
+    delay: 1000,
+    easing: 'easeInOutQuart'
+  },
+  delay: 500, // All properties inherit 500ms delay
+  direction: 'alternate' // All properties inherit alternate direction
 });
 </script>
 </div>
@@ -878,35 +896,6 @@ var hsl = anime({
   delay: 500,
   direction: 'alternate',
   loop: true
-});
-</script>
-</div>
-
-<div id="specificTimingsDemo" class="demo">
-  <h3 class="demo-title">Specific timings value</h3>
-  <div class="demo-content">
-    <div class="square shadow"></div>
-    <div class="square el"></div>
-  </div>
-<script>var specificTimingsDemo = anime({
-  targets: '#specificTimingsDemo .el',
-  translateX: {
-    value: 250,
-    duration: 1000
-  },
-  rotate: {
-    value: 360,
-    duration: 1800,
-    easing: 'easeInOutSine'
-  },
-  scale: {
-    value: 2,
-    duration: 2000,
-    delay: 1000,
-    easing: 'easeInOutQuart'
-  },
-  delay: 500, // Other values are in
-  direction: 'alternate'
 });
 </script>
 </div>
