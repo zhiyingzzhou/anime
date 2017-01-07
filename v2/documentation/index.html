@@ -133,7 +133,7 @@ var JSarray = anime({
 <!-- ANIMATABLE PROPERTIES -->
 <article id="properties" class="color-04">
 <header>
-  <h2 class="demos-title">Animatable properties</h2>
+  <h2 class="demos-title">Properties</h2>
 </header>
 
 <div id="cssDemo" class="demo">
@@ -358,7 +358,7 @@ var objectPropDemo = anime({
   targets: '#specificPropertyParameters .el',
   translateX: {
     value: 250,
-    duration: 1000
+    duration: 800
   },
   rotate: {
     value: 360,
@@ -367,12 +367,11 @@ var objectPropDemo = anime({
   },
   scale: {
     value: 2,
-    duration: 2000,
-    delay: 1000,
+    duration: 1600,
+    delay: 800,
     easing: 'easeInOutQuart'
   },
-  delay: 500, // All properties inherit 500ms delay
-  direction: 'alternate' // All properties inherit alternate direction
+  delay: 250 // All properties except 'scale' inherit 250ms delay
 });
 </script>
 </div>
