@@ -130,6 +130,90 @@ var JSarray = anime({
 </article>
 <!-- -->
 
+<!-- PROPERTIES -->
+<article id="properties" class="color-04">
+<header>
+  <h2 class="demos-title">Properties</h2>
+</header>
+
+<div id="cssDemo" class="demo">
+  <h3 class="demo-title">CSS</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var cssDemo = anime({
+  targets: '#cssDemo .el',
+  left: '85%',
+  backgroundColor: '#FFF'
+});
+</script>
+</div>
+
+<div id="transformsDemo" class="demo">
+  <h3 class="demo-title">CSS Transforms</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var transformsDemo = anime({
+  targets: '#transformsDemo .el',
+  translateX: 250,
+  scale: 1.5,
+  rotate: 300
+});
+</script>
+</div>
+
+<div id="objectPropDemo" class="demo">
+  <h3 class="demo-title">Object properties</h3>
+<div class="demo-content"><pre>{"myProperty":"0"}</pre></div>
+<script>var objectProp = { myProperty: 0 };
+var objectPropDemo = anime({
+  targets: objectProp,
+  myProperty: 42,
+  round: 1,
+  easing: 'linear',
+  update: function() {
+    var el = document.querySelector('#objectPropDemo pre');
+    el.innerHTML = JSON.stringify(objectProp);
+  }
+});
+</script>
+</div>
+
+<div id="domAttributes" class="demo">
+  <h3 class="demo-title">DOM Attributes</h3>
+  <div class="demo-content">
+    <input class="text-output" value="0"></input>
+  </div>
+<script>var domAttributes = anime({
+  targets: '#domAttributes input',
+  value: 1000,
+  round: 1,
+  easing: 'easeInOutExpo'
+});
+</script>
+</div>
+
+<div id="svgAttributes" class="demo">
+  <h3 class="demo-title">SVG Attributes</h3>
+  <div class="demo-content align-center">
+<svg width="128" height="128" viewBox="0 0 128 128">
+  <polygon points="64 68.64 8.574 100 63.446 67.68 64 4 64.554 67.68 119.426 100" fill="currentColor"/>
+</svg>
+  </div>
+<script>var svgAttributes = anime({
+  targets: '#svgAttributes polygon',
+  points: '64 128 8.574 96 8.574 32 64 0 119.426 32 119.426 96',
+  easing: 'easeInOutExpo'
+});
+</script>
+</div>
+
+</article>
+<!-- -->
+
 <!-- SETTINGS -->
 <article id="basicSettings" class="color-02">
   <header>
@@ -669,90 +753,6 @@ var elasticity1000 = anime({
 </script>
 <script>var elasticity = anime.timeline();
 elasticity.add([elasticity0, elasticity100, elasticity200, elasticity300, elasticity400, elasticity500, elasticity600, elasticity700, elasticity800, elasticity900, elasticity1000]);
-</script>
-</div>
-
-</article>
-<!-- -->
-
-<!-- PROPERTIES -->
-<article id="properties" class="color-04">
-<header>
-  <h2 class="demos-title">Properties</h2>
-</header>
-
-<div id="cssDemo" class="demo">
-  <h3 class="demo-title">CSS</h3>
-  <div class="demo-content">
-    <div class="square shadow"></div>
-    <div class="square el"></div>
-  </div>
-<script>var cssDemo = anime({
-  targets: '#cssDemo .el',
-  left: '85%',
-  backgroundColor: '#FFF'
-});
-</script>
-</div>
-
-<div id="transformsDemo" class="demo">
-  <h3 class="demo-title">CSS Transforms</h3>
-  <div class="demo-content">
-    <div class="square shadow"></div>
-    <div class="square el"></div>
-  </div>
-<script>var transformsDemo = anime({
-  targets: '#transformsDemo .el',
-  translateX: 250,
-  scale: 1.5,
-  rotate: 300
-});
-</script>
-</div>
-
-<div id="objectPropDemo" class="demo">
-  <h3 class="demo-title">Object properties</h3>
-<div class="demo-content"><pre>{"myProperty":"0"}</pre></div>
-<script>var objectProp = { myProperty: 0 };
-var objectPropDemo = anime({
-  targets: objectProp,
-  myProperty: 42,
-  round: 1,
-  easing: 'linear',
-  update: function() {
-    var el = document.querySelector('#objectPropDemo pre');
-    el.innerHTML = JSON.stringify(objectProp);
-  }
-});
-</script>
-</div>
-
-<div id="domAttributes" class="demo">
-  <h3 class="demo-title">DOM Attributes</h3>
-  <div class="demo-content">
-    <input class="text-output" value="0"></input>
-  </div>
-<script>var domAttributes = anime({
-  targets: '#domAttributes input',
-  value: 1000,
-  round: 1,
-  easing: 'easeInOutExpo'
-});
-</script>
-</div>
-
-<div id="svgAttributes" class="demo">
-  <h3 class="demo-title">SVG Attributes</h3>
-  <div class="demo-content align-center">
-<svg width="128" height="128" viewBox="0 0 128 128">
-  <polygon points="64 68.64 8.574 100 63.446 67.68 64 4 64.554 67.68 119.426 100" fill="currentColor"/>
-</svg>
-  </div>
-<script>var svgAttributes = anime({
-  targets: '#svgAttributes polygon',
-  points: '64 128 8.574 96 8.574 32 64 0 119.426 32 119.426 96',
-  easing: 'easeInOutExpo'
-});
 </script>
 </div>
 
