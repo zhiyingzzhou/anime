@@ -104,10 +104,11 @@ function createDemo(el) {
       var ulEl = linkEl.parentNode.parentNode;
       linkEl.classList.add('active');
       el.classList.add('active');
-      scrollTo('#'+id, 60);
       toggleSectionLink(ulEl);
+      scrollTo('#'+id, 60, demoAnim.restart);
+    } else {
+      demoAnim.restart();
     }
-    if (!el.classList.contains('controls')) demoAnim.restart();
   }
   function enterDemo() {
     if (!el.classList.contains('active')) {
