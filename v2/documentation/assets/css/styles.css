@@ -355,7 +355,8 @@ input.progress {
   cursor: ew-resize;
 }
 
-.square {
+.square,
+.circle {
   pointer-events: none;
   position: relative;
   width: 28px;
@@ -363,6 +364,20 @@ input.progress {
   margin: 1px;
   background-color: currentColor;
   font-size: 12px;
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+.triangle {
+  pointer-events: none;
+  position: relative;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 14px 24px 14px;
+  border-color: transparent transparent currentColor transparent;
 }
 
 .small {

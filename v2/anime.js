@@ -462,13 +462,22 @@
 
   // Properties
 
-  function normalizePropertyTweens(prop, tweenSettings, propIndex) {
-    const l = arrayLength(prop);
+  function normalizePropertyTweens(prop, tweenSettings) {
+    let settings = cloneObject(tweenSettings);
     if (is.arr(prop)) {
+      const l = arrayLength(prop);
+      // const isObjArray = is.obj(prop[0]);
+      const isFromTo = (l === 2 && !is.obj(prop[0]));
+      // const duration = isFromTo ? 1 : l;
       // // Duration divided by the number of tweens
-      if (!is.fnc(tweenSettings.duration) && l > 2 && !propIndex) tweenSettings.duration = tweenSettings.duration / l;
-      // Transform [from, to] values shorthand to a valid tween value
-      if ((l === 2 && !is.arr(prop[0]) && !is.obj(prop[0]))) prop = {value: prop};
+      // if (!is.fnc(tweenSettings.duration) && isObjArray) settings.duration = tweenSettings.duration / duration;
+      // // Transform [from, to] values shorthand to a valid tween value
+      // if (isFromTo) prop = {value: prop};
+      if (!isFromTo) {
+        if (!is.fnc(tweenSettings.duration)) settings.duration = tweenSettings.duration / l;
+      } else {
+        prop = {value: prop};
+      }
     }
     return toArray(prop).map((v, i) => {
       // Default default value should be applied only on the first tween
@@ -478,7 +487,7 @@
       // Set default delay value
       obj.delay = obj.delay || delay;
       return obj;
-    }).map(k => mergeObjects(k, tweenSettings));
+    }).map(k => mergeObjects(k, settings));
   }
 
   function getProperties(instanceSettings, tweenSettings, params) {
@@ -488,7 +497,7 @@
       if (!objectHas(settings, p) && p !== 'targets') {
         properties.push({
           name: p,
-          tweens: normalizePropertyTweens(params[p], tweenSettings, arrayLength(properties))
+          tweens: normalizePropertyTweens(params[p], tweenSettings)
         });
       }
     }

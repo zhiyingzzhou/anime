@@ -107,7 +107,7 @@ function createDemo(el) {
       toggleSectionLink(ulEl);
       scrollTo('#'+id, 60, demoAnim.restart);
     } else {
-      demoAnim.restart();
+      if (!el.classList.contains('controls')) demoAnim.restart();
     }
   }
   function enterDemo() {

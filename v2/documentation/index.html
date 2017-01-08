@@ -693,17 +693,11 @@ var hsl = anime({
   </div>
 <script>var basicKeyframes = anime({
   targets: '#basicKeyframes .el',
-  translateX: [
-    { value: 80 },
-    { value: 160 },
-    { value: 250 }
-  ],
-  translateY: [
-    { value: -40 },
-    { value: 40 },
-    { value: 0 }
-  ],
-  duration: 1500 // The duration will be divided by the number of keyframes of each properties, so 500ms each in this example
+  translateX: [ { value: 80 }, { value: 160 }, { value: 250 } ],
+  translateY: [ { value: -40 }, { value: 40 }, { value: 0 } ],
+  duration: 1500, // The duration will be divided by the number of keyframes of each properties, so 500ms each in this example
+  direction: 'alternate',
+  loop: true
 });
 </script>
 </div>
@@ -738,6 +732,105 @@ var hsl = anime({
 <article id="timeline" class="color-07">
 <header>
   <h2 class="demos-title">Timeline</h2>
+</header>
+
+<div id="basicTimeline" class="demo">
+  <h3 class="demo-title">Basic timeline</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="square shadow"></div>
+      <div class="square el"></div>
+    </div>
+    <div class="line">
+      <div class="circle shadow"></div>
+      <div class="circle el"></div>
+    </div>
+    <div class="line">
+      <div class="triangle shadow"></div>
+      <div class="triangle el"></div>
+    </div>
+  </div>
+<script>var basicTimeline = anime.timeline();
+
+basicTimeline.add([
+  anime({
+    targets: '#basicTimeline .square.el',
+    translateX: [ { value: 80 }, { value: 160 }, { value: 250 } ],
+    translateY: [ { value: 30 }, { value: 60 }, { value: 60 } ],
+    duration: 2000
+  }),
+  anime({
+    targets: '#basicTimeline .circle.el',
+    translateX: [ { value: 80 }, { value: 160 }, { value: 250 } ],
+    translateY: [ { value: 30 }, { value: -30 }, { value: -30 } ],
+    duration: 3000
+  }),
+  anime({
+    targets: '#basicTimeline .triangle.el',
+    translateX: [ { value: 80 }, { value: 250 } ],
+    translateY: [ { value: -60 }, { value: -30 }, { value: -30 } ],
+    duration: 3000
+  })
+]);
+
+</script>
+</div>
+
+<div id="timelineParameters" class="demo">
+  <h3 class="demo-title">Timeline parameters</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="square shadow"></div>
+      <div class="square el"></div>
+    </div>
+    <div class="line">
+      <div class="circle shadow"></div>
+      <div class="circle el"></div>
+    </div>
+    <div class="line">
+      <div class="triangle shadow"></div>
+      <div class="triangle el"></div>
+    </div>
+  </div>
+<script>var timelineParameters = anime.timeline({
+  direction: 'reverse',
+  loop: 'true'
+});
+
+timelineParameters.add([
+  anime({
+    targets: '#timelineParameters .square.el',
+    translateX: [ { value: 80 }, { value: 160 }, { value: 250 } ],
+    translateY: [ { value: 30 }, { value: 60 }, { value: 60 } ],
+    duration: 2000,
+    delay: 1000
+  }),
+  anime({
+    targets: '#timelineParameters .circle.el',
+    translateX: [ { value: 80 }, { value: 160 }, { value: 250 } ],
+    translateY: [ { value: 30 }, { value: -30 }, { value: -30 } ],
+    duration: 3000,
+    delay: 1000
+  }),
+  anime({
+    targets: '#timelineParameters .triangle.el',
+    translateX: [ { value: 80 }, { value: 250 } ],
+    translateY: [ { value: -60 }, { value: -30 }, { value: -30 } ],
+    duration: 3000,
+    delay: 1000
+  })
+]);
+
+</script>
+</div>
+
+</article>
+<!-- -->
+
+<!-- PLAYBACK -->
+<article id="playback" class="color-07">
+<header>
+  <h2 class="demos-title">Playback</h2>
 </header>
 
 <div id="single" class="demo controls">
@@ -784,75 +877,6 @@ singlePauseButton.addEventListener('click', function() { single.pause(); });
 singleRestartButton.addEventListener('click', function() { single.restart(); });
 singleProgressEl.addEventListener('input', function() {
   single.seek(single.duration * (singleProgressEl.value / 100));
-});
-</script>
-</div>
-
-<div id="multiple" class="demo controls">
-  <h3 class="demo-title">Synchronized animations</h3>
-  <div class="demo-content">
-    <div class="line">
-      <div class="small square shadow"></div>
-      <div class="small square el-01"></div>
-    </div>
-    <div class="line">
-      <div class="small square shadow"></div>
-      <div class="small square el-02"></div>
-    </div>
-    <div class="line">
-      <div class="small square shadow"></div>
-      <div class="small square el-03"></div>
-    </div>
-    <div class="line player align-items">
-      <button class="play">Play</button>
-      <button class="pause">Pause</button>
-      <button class="restart">Restart</button>
-      <input class="progress" type="range" min="0" max="100" value="0"></input>
-    </div>
-  </div>
-<script>var multiplePlayButton = document.querySelector('#multiple .play');
-var multiplePauseButton = document.querySelector('#multiple .pause');
-var multipleRestartButton = document.querySelector('#multiple .restart');
-var multipleProgressEl = document.querySelector('#multiple .progress');
-
-var multiple = anime.timeline({
-  direction: 'alternate',
-  update: function(anim) {
-    multipleProgressEl.value = anim.progress;
-  }
-});
-
-multiple.add([
-  anime({
-    targets: '#multiple .el-01',
-    translateX: 75,
-    translateY: [22, 22],
-    rotate: 180,
-    duration: 400,
-    easing: 'easeInQuart'
-  }),
-  anime({
-    targets: '#multiple .el-02',
-    translateX: [75+18, 175],
-    duration: 400,
-    delay: 420,
-    easing: 'easeOutQuart'
-  }),
-  anime({
-    targets: '#multiple .el-03',
-    translateX: [175+8, 275],
-    translateY: [-22, -22],
-    duration: 4000,
-    delay: 605,
-    easing: [.05,.18,.01,.81]
-  })
-])
-
-multiplePlayButton.addEventListener('click', function() { multiple.play(); });
-multiplePauseButton.addEventListener('click', function() { multiple.pause(); });
-multipleRestartButton.addEventListener('click', function() { multiple.restart(); });
-multipleProgressEl.addEventListener('input', function() {
-  multiple.seek(multiple.duration * (multipleProgressEl.value / 100));
 });
 </script>
 </div>
