@@ -795,7 +795,7 @@
   anime.remove = removeTargets;
   anime.getValue = getOriginalTargetValue;
   anime.path = getPath;
-  anime.pathDashoffset = setDashoffset;
+  anime.setDashoffset = setDashoffset;
   anime.bezier = bezier;
   anime.easings = easings;
   anime.timeline = timeline;

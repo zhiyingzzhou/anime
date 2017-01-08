@@ -1141,20 +1141,20 @@ complete.update = function(anim) {
 </article>
 <!-- -->
 
-<!-- MOTION PATH -->
-<article id="motionpath" class="color-10">
+<!-- SVG -->
+<article id="svg" class="color-10">
 <header>
-  <h2 class="demos-title">Motion path</h2>
+  <h2 class="demos-title">SVG</h2>
 </header>
 
 <div id="motionPath" class="demo">
-  <h3 class="demo-title">Basic path animation</h3>
+  <h3 class="demo-title">Motion path</h3>
   <div class="demo-content">
     <div class="motion-path">
       <div class="small square shadow follow-path"></div>
       <div class="small square el follow-path"></div>
       <svg width="256" height="112" viewBox="0 0 256 112">
-        <path fill="none" stroke="currentColor" d="M8,56 C8,33.90861 25.90861,16 48,16 C70.09139,16 88,33.90861 88,56 C88,78.09139 105.90861,92 128,92 C150.09139,92 160,72 160,56 C160,40 148,24 128,24 C108,24 96,40 96,56 C96,72 105.90861,92 128,92 C154,93 168,78 168,56 C168,33.90861 185.90861,16 208,16 C230.09139,16 248,33.90861 248,56 C248,78.09139 230.09139,96 208,96 L48,96 C25.90861,96 8,78.09139 8,56 Z"/>
+        <path fill="none" stroke="currentColor" stroke-width="1" d="M8,56 C8,33.90861 25.90861,16 48,16 C70.09139,16 88,33.90861 88,56 C88,78.09139 105.90861,92 128,92 C150.09139,92 160,72 160,56 C160,40 148,24 128,24 C108,24 96,40 96,56 C96,72 105.90861,92 128,92 C154,93 168,78 168,56 C168,33.90861 185.90861,16 208,16 C230.09139,16 248,33.90861 248,56 C248,78.09139 230.09139,96 208,96 L48,96 C25.90861,96 8,78.09139 8,56 Z"/>
       </svg>
     </div>
   </div>
@@ -1167,6 +1167,64 @@ var motionPath = anime({
   rotate: path('angle'),
   easing: 'easeOutQuad',
   duration: 2000,
+  direction: 'alternate',
+  loop: true
+});
+
+</script>
+</div>
+
+<div id="morphing" class="demo">
+  <h3 class="demo-title">Morphing</h3>
+  <div class="demo-content align-center">
+    <svg width="140" height="140" viewBox="0 0 140 140">
+      <g fill="none" fill-rule="evenodd">
+        <g fill="currentColor" fill-opacity=".15" transform="translate(0 6)">
+          <polygon points="70 0 136.574 48.369 111.145 126.631 28.855 126.631 3.426 48.369"/>
+          <polygon points="70 18 119.455 53.931 100.565 112.069 39.435 112.069 20.545 53.931"/>
+          <polygon points="70 34.86 101.727 57.911 89.609 95.209 50.391 95.209 38.273 57.911"/>
+          <polygon points="70 50.898 84.864 61.697 79.186 79.171 60.814 79.171 55.136 61.697"/>
+        </g>
+        <polygon class="polymorph" stroke-width="1" stroke="currentColor" points="70 24 119.574 60.369 100.145 117.631 50.855 101.631 3.426 54.369"/>
+      </g>
+    </svg>
+  </div>
+<script>var morphing = anime({
+  targets: '#morphing .polymorph',
+  points: [
+    { value: '70 41 118.574 59.369 111.145 132.631 60.855 84.631 20.426 60.369' },
+    { value: '70 6 119.574 60.369 100.145 117.631 39.855 117.631 55.426 68.369' },
+    { value: '70 57 136.574 54.369 89.145 100.631 28.855 132.631 38.426 64.369' },
+    { value: '70 24 119.574 60.369 100.145 117.631 50.855 101.631 3.426 54.369' }
+  ],
+  easing: 'easeOutQuad',
+  duration: 2000,
+  loop: true
+});
+
+</script>
+</div>
+
+<div id="lineDrawing" class="demo">
+  <h3 class="demo-title">Line drawing</h3>
+  <div class="demo-content align-center">
+    <svg width="260" height="80" viewBox="0 0 260 80">
+      <g fill="none" fill-rule="evenodd" stroke="currentColor">
+        <path fill="currentColor" fill-opacity=".15" d="M138 25a15 15 0 0 0-15 15v30h-15V40a30 30 0 0 1 60 0v30h-15V40a15 15 0 0 0-15-15z"/>
+        <path fill="currentColor" fill-opacity=".15" d="M198 40a15 15 0 0 0-30 0v30h-15V40a30 30 0 0 1 60 0v30h-15V40"/>
+        <path fill="currentColor" fill-opacity=".15" d="M198 40a30 30 0 0 1 60 0v15h-30V40h15a15 15 0 1 0-15 15h7.5v15H228a30 30 0 0 1-30-30zM3 40a30 30 0 1 1 60 0v30H48V40a15 15 0 1 0-15 15h7.5v15H33A30 30 0 0 1 3 40z"/>
+        <path fill="currentColor" fill-opacity=".15" d="M93 40a15 15 0 0 0-30 0v30H48V40a30 30 0 1 1 60 0v30H93V40"/>
+        <path fill="currentColor" fill-opacity=".15" d="M123 55.5v15a30 30 0 0 1-30-30V33h15v7.5a15 15 0 0 0 15 15z"/>
+        <path d="M93 33v7.5a30 30 0 0 0 30 30v-15a15 15 0 0 1-15-15V33H93zm15-15.5a7.5 7.5 0 1 0-8 7.48h1a7.5 7.5 0 0 0 7-7.48z"/>
+      </g>
+    </svg>
+  </div>
+<script>var lineDrawing = anime({
+  targets: '#lineDrawing path',
+  strokeDashoffset: [anime.setDashoffset, 0],
+  easing: 'easeOutQuad',
+  duration: 2000,
+  delay: function(el, i, l) { return (l - i) * 200 },
   direction: 'alternate',
   loop: true
 });
