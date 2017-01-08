@@ -310,6 +310,7 @@ article {
 }
 
 .player {
+  opacity: .4;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -329,7 +330,11 @@ article {
   color: currentColor;
 }
 
-.player button:hover:after {
+.active .player {
+  opacity: 1;
+}
+
+.active .player button:hover:after {
   content: '';
   opacity: .3;
   position: absolute;
