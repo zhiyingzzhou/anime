@@ -833,8 +833,8 @@ timelineParameters.add([
   <h2 class="demos-title">Playback</h2>
 </header>
 
-<div id="single" class="demo controls">
-  <h3 class="demo-title">Single animation</h3>
+<div id="playPause" class="demo controls">
+  <h3 class="demo-title">Play / Pause</h3>
   <div class="demo-content">
     <div class="line">
       <div class="small square shadow"></div>
@@ -848,6 +848,108 @@ timelineParameters.add([
       <div class="small square shadow"></div>
       <div class="small square el"></div>
     </div>
+    <div class="line player">
+      <button class="play">Play</button>
+      <button class="pause">Pause</button>
+    </div>
+  </div>
+<script>var playPause = anime({
+  targets: '#playPause .el',
+  translateX: 250,
+  direction: 'alternate',
+  loop: true,
+  delay: function(el, i, l) { return i * 100; },
+  autoplay: false
+});
+
+document.querySelector('#playPause .play').onclick = playPause.play;
+document.querySelector('#playPause .pause').onclick = playPause.pause;
+
+</script>
+</div>
+
+<div id="restartAnim" class="demo controls">
+  <h3 class="demo-title">Restart</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line player">
+      <button class="restart">Restart</button>
+    </div>
+  </div>
+<script>var restartAnim = anime({
+  targets: '#restartAnim .el',
+  translateX: 250,
+  direction: 'alternate',
+  loop: true,
+  delay: function(el, i, l) { return i * 100; },
+  autoplay: false
+});
+
+document.querySelector('#restartAnim .restart').onclick = restartAnim.restart;
+
+</script>
+</div>
+
+<div id="seekAnim" class="demo controls">
+  <h3 class="demo-title">Seek</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line player">
+      <input class="progress" type="range" min="0" max="100" value="0"></input>
+    </div>
+  </div>
+<script>var seekAnim = anime({
+  targets: '#seekAnim .el',
+  translateX: 250,
+  delay: function(el, i, l) { return i * 100; },
+  autoplay: false
+});
+
+var seekProgressEl = document.querySelector('#seekAnim .progress');
+document.querySelector('#seekAnim .progress').oninput = function() {
+  seekAnim.seek(seekAnim.duration * (seekProgressEl.value / 100));
+};
+
+</script>
+</div>
+
+<div id="TLcontrols" class="demo controls">
+  <h3 class="demo-title">Timemline controls</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="square shadow"></div>
+      <div class="square el"></div>
+    </div>
+    <div class="line">
+      <div class="circle shadow"></div>
+      <div class="circle el"></div>
+    </div>
+    <div class="line">
+      <div class="triangle shadow"></div>
+      <div class="triangle el"></div>
+    </div>
     <div class="line player align-items">
       <button class="play">Play</button>
       <button class="pause">Pause</button>
@@ -855,28 +957,42 @@ timelineParameters.add([
       <input class="progress" type="range" min="0" max="100" value="0"></input>
     </div>
   </div>
-<script>var singlePlayButton = document.querySelector('#single .play');
-var singlePauseButton = document.querySelector('#single .pause');
-var singleRestartButton = document.querySelector('#single .restart');
-var singleProgressEl = document.querySelector('#single .progress');
+<script>var controlsProgressEl = document.querySelector('#TLcontrols .progress');
 
-var single = anime({
-  targets: '#single .el',
-  translateX: 250,
+var TLcontrols = anime.timeline({
   direction: 'alternate',
-  loop: true,
-  delay: function(el, i, l) { return i * 100; },
-  autoplay: false,
   update: function(anim) {
-    singleProgressEl.value = anim.progress;
+    controlsProgressEl.value = anim.progress;
   }
 });
 
-singlePlayButton.addEventListener('click', function() { single.play(); });
-singlePauseButton.addEventListener('click', function() { single.pause(); });
-singleRestartButton.addEventListener('click', function() { single.restart(); });
-singleProgressEl.addEventListener('input', function() {
-  single.seek(single.duration * (singleProgressEl.value / 100));
+TLcontrols.add([
+  anime({
+    targets: '#TLcontrols .square.el',
+    translateX: [ { value: 80 }, { value: 160 }, { value: 250 } ],
+    translateY: [ { value: 30 }, { value: 60 }, { value: 60 } ],
+    duration: 2000
+  }),
+  anime({
+    targets: '#TLcontrols .circle.el',
+    translateX: [ { value: 80 }, { value: 160 }, { value: 250 } ],
+    translateY: [ { value: 30 }, { value: -30 }, { value: -30 } ],
+    duration: 3000
+  }),
+  anime({
+    targets: '#TLcontrols .triangle.el',
+    translateX: [ { value: 80 }, { value: 250 } ],
+    translateY: [ { value: -60 }, { value: -30 }, { value: -30 } ],
+    duration: 3000
+  })
+]);
+
+document.querySelector('#TLcontrols .play').onclick = TLcontrols.play;
+document.querySelector('#TLcontrols .pause').onclick = TLcontrols.pause;
+document.querySelector('#TLcontrols .restart').onclick = TLcontrols.restart;
+
+controlsProgressEl.addEventListener('input', function() {
+  TLcontrols.seek(TLcontrols.duration * (controlsProgressEl.value / 100));
 });
 </script>
 </div>

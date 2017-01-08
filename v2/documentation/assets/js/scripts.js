@@ -105,7 +105,9 @@ function createDemo(el) {
       linkEl.classList.add('active');
       el.classList.add('active');
       toggleSectionLink(ulEl);
-      scrollTo('#'+id, 60, demoAnim.restart);
+      scrollTo('#'+id, 60, function() {
+        if (!el.classList.contains('controls')) demoAnim.restart();
+      });
     } else {
       if (!el.classList.contains('controls')) demoAnim.restart();
     }

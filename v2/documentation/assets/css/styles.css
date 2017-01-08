@@ -231,6 +231,10 @@ article {
   cursor: pointer;
 }
 
+.demo.controls {
+  padding-top: 50px;
+}
+
 .demo.active.controls {
   cursor: default;
 }
@@ -306,11 +310,39 @@ article {
 }
 
 .player {
-  padding-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 20px;
+  padding-bottom: 10px;
 }
 
 .player button {
-  padding: 5px 2px;;
+  position: relative;
+  display: block;
+  margin: 0 0 0 -1px;
+  padding: 5px 10px;
+  font-size: 12px;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  background-color: transparent;
+  color: currentColor;
+}
+
+.player button:hover:after {
+  content: '';
+  opacity: .3;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: currentColor;
+}
+
+.player button:first-child {
+  margin-left: 0;
 }
 
 .player input {
