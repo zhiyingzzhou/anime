@@ -87,16 +87,16 @@ var nodeList = anime({
   <div class="demo-content">
     <pre>{"charged":"0"}</pre>
   </div>
-<script>var myObject = { charged: '0%' };
+<script>var obj = { charged: '0%' };
 
 var JSobject = anime({
-  targets: myObject,
+  targets: obj,
   charged: '100%',
   round: 1,
   easing: 'linear',
   update: function() {
     var el = document.querySelector('#JSobject pre');
-    el.innerHTML = JSON.stringify(myObject);
+    el.innerHTML = JSON.stringify(obj);
   }
 });
 </script>
@@ -144,7 +144,8 @@ var JSarray = anime({
   </div>
 <script>var cssDemo = anime({
   targets: '#cssDemo .el',
-  left: '85%',
+  left: '90%',
+  opacity: .5,
   backgroundColor: '#FFF'
 });
 </script>
@@ -160,7 +161,7 @@ var JSarray = anime({
   targets: '#transformsDemo .el',
   translateX: 250,
   scale: 1.5,
-  rotate: 300
+  rotate: '1turn'
 });
 </script>
 </div>
@@ -168,15 +169,19 @@ var JSarray = anime({
 <div id="objectPropDemo" class="demo">
   <h3 class="demo-title">Object properties</h3>
 <div class="demo-content"><pre>{"myProperty":"0"}</pre></div>
-<script>var objectProp = { myProperty: 0 };
+<script>var myObject = {
+  prop1: 0,
+  prop2: '0%'
+}
 var objectPropDemo = anime({
-  targets: objectProp,
-  myProperty: 42,
-  round: 1,
+  targets: myObject,
+  prop1: 500,
+  prop2: '100%',
   easing: 'linear',
+  round: 1,
   update: function() {
     var el = document.querySelector('#objectPropDemo pre');
-    el.innerHTML = JSON.stringify(objectProp);
+    el.innerHTML = JSON.stringify(myObject);
   }
 });
 </script>
