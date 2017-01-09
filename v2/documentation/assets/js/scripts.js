@@ -27,7 +27,7 @@ function parseHTML(el, parentId) {
   var clone = el.cloneNode(true);
   var shadowEls = clone.querySelectorAll('.shadow');
   var els = clone.querySelectorAll('.el');
-  for (var i = 0; i < shadowEls.length; i++ ) shadowEls[i].remove();
+  for (var i = 0; i < shadowEls.length; i++ ) clone.removeChild(shadowEls[i]);
   for (var i = 0; i < els.length; i++ ) els[i].removeAttribute('style');
   parentEl.id = parentId;
   parentEl.innerHTML = clone.innerHTML;
