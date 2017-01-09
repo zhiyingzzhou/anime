@@ -535,6 +535,7 @@ input.progress {
   width: 100%;
   min-width: auto;
   height: calc(100% - 60px);
+  -webkit-overflow-scrolling: touch;
 }
 
 @media (min-width: 600px) {
