@@ -42,6 +42,7 @@
   }
 
   const validTransforms = ['translateX', 'translateY', 'translateZ', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'scale', 'scaleX', 'scaleY', 'scaleZ', 'skewX', 'skewY'];
+  let transformString;
 
   // Utils
 
@@ -466,16 +467,12 @@
     let settings = cloneObject(tweenSettings);
     if (is.arr(prop)) {
       const l = arrayLength(prop);
-      // const isObjArray = is.obj(prop[0]);
       const isFromTo = (l === 2 && !is.obj(prop[0]));
-      // const duration = isFromTo ? 1 : l;
-      // // Duration divided by the number of tweens
-      // if (!is.fnc(tweenSettings.duration) && isObjArray) settings.duration = tweenSettings.duration / duration;
-      // // Transform [from, to] values shorthand to a valid tween value
-      // if (isFromTo) prop = {value: prop};
       if (!isFromTo) {
+        // Duration divided by the number of tweens
         if (!is.fnc(tweenSettings.duration)) settings.duration = tweenSettings.duration / l;
       } else {
+        // Transform [from, to] values shorthand to a valid tween value
         prop = {value: prop};
       }
     }
@@ -637,7 +634,11 @@
     }
     if (transforms) {
       let id; for (id in transforms) {
-        instance.animatables[id].target.style.transform = transforms[id].join(' ');
+        if (!transformString) {
+          const t = 'transform';
+          transformString = (getCSSValue(document.body, t) ? t : `-webkit-${t}`);
+        }
+        instance.animatables[id].target.style[transformString] = transforms[id].join(' ');
       }
     }
     if (instance.update) instance.update(instance);
@@ -666,15 +667,14 @@
 
   // Core
 
-  let instances = [];
-  let running = [];
+  let activeInstances = [];
   let raf = 0;
 
   const engine = (() => {
     function play() { raf = requestAnimationFrame(step); };
     function step(t) {
-      if (arrayLength(running)) {
-        for (let i = 0; i < arrayLength(running); i++) running[i].tick(t);
+      if (arrayLength(activeInstances)) {
+        for (let i = 0; i < arrayLength(activeInstances); i++) activeInstances[i].tick(t);
         play();
       } else {
         cancelAnimationFrame(raf);
@@ -721,8 +721,8 @@
     }
 
     instance.pause = function() {
-      const i = running.indexOf(instance);
-      if (i > -1) running.splice(i, 1);
+      const i = activeInstances.indexOf(instance);
+      if (i > -1) activeInstances.splice(i, 1);
       instance.paused = true;
     }
 
@@ -736,7 +736,7 @@
         if (instance.reversed && !instance.remaining % 2) toggleInstanceDirection(instance);
         if (!instance.remaining) instance.remaining = 2;
       }
-      running.push(instance);
+      activeInstances.push(instance);
       if (!raf) engine();
     }
 
@@ -751,7 +751,6 @@
     }
 
     if (instance.autoplay) instance.restart();
-    instances.push(instance);
 
     return instance;
 
@@ -761,8 +760,8 @@
 
   function removeTargets(targets) {
     const targetsArray = parseTargets(targets);
-    for (let i = arrayLength(running)-1; i >= 0; i--) {
-      const instance = running[i];
+    for (let i = arrayLength(activeInstances)-1; i >= 0; i--) {
+      const instance = activeInstances[i];
       const animations = instance.animations;
       for (let a = arrayLength(animations)-1; a >= 0; a--) {
         if (arrayContains(targetsArray, animations[a].animatable.target)) {
@@ -790,8 +789,7 @@
 
   anime.version = '2.0.0';
   anime.speed = 1;
-  anime.active = running;
-  anime.list = instances;
+  anime.running = activeInstances;
   anime.remove = removeTargets;
   anime.getValue = getOriginalTargetValue;
   anime.path = getPath;
