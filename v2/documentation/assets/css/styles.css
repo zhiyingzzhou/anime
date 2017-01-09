@@ -367,6 +367,10 @@ article {
   color: currentColor;
 }
 
+.player button:focus {
+  outline: none;
+}
+
 .active .player {
   opacity: 1;
 }
