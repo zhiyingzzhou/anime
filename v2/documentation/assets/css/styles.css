@@ -486,6 +486,7 @@ input.progress {
 
 .motion-path {
   position: relative;
+  width: 256px;
   margin: auto;
 }
 
