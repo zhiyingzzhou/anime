@@ -3,6 +3,7 @@ var demosEl = document.querySelector('.demos');
 var articleEls = document.querySelectorAll('article');
 var jsOutputEl = document.querySelector('.js-output');
 var htmlOutputEl = document.querySelector('.html-output');
+var ulHeight = 20;
 var demos = [];
 
 function getScrollTop() {
@@ -54,16 +55,16 @@ function outputCode(JScode, HTMLcode) {
 }
 
 function toggleSectionLink(ulEl) {
-  var ulHeight = 20;
   var ulEls = document.querySelectorAll('.navigation ul');
   for (var i = 0; i < ulEls.length; i++) ulEls[i].classList.remove('active');
+  ulEl.classList.add('active');
+  anime.remove(ulEls);
   anime({
-    targets: '.navigation ul',
+    targets: '.navigation ul:not(.active)',
     height: ulHeight + 10,
     duration: 400,
     easing: 'easeOutQuart'
   });
-  anime.remove(ulEl);
   anime({
     targets: ulEl,
     height: function(el) {
@@ -73,7 +74,6 @@ function toggleSectionLink(ulEl) {
     delay: 400,
     easing: 'easeInOutQuart'
   });
-  ulEl.classList.add('active');
 }
 
 function resetDemos() {
@@ -108,8 +108,8 @@ function createDemo(el) {
       var ulEl = linkEl.parentNode.parentNode;
       linkEl.classList.add('active');
       el.classList.add('active');
-      toggleSectionLink(ulEl);
       scrollTo('#'+id, 60, function() {
+        toggleSectionLink(ulEl);
         if (!el.classList.contains('controls')) demoAnim.restart();
       });
       if (push) history.pushState(null, null, '#'+id);
