@@ -100,13 +100,13 @@ function createDemo(el) {
       for (var i = 0; i < demos.length; i++) {
         var d = demos[i];
         d.el.classList.remove('active');
-        linkEls[i].classList.remove('active');
+        linkEls[i].parentNode.classList.remove('active');
         d.anim.pause();
       }
       outputCode(JScode, HTMLcode);
       var linkEl = document.querySelector('a[href="#'+id+'"]');
       var ulEl = linkEl.parentNode.parentNode;
-      linkEl.classList.add('active');
+      linkEl.parentNode.classList.add('active');
       el.classList.add('active');
       scrollTo('#'+id, 60, function() {
         toggleSectionLink(ulEl);
