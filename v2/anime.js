@@ -319,8 +319,8 @@
   // Units
 
   function getUnit(val) {
-    if (val === 'auto' || is.obj(val)) return;
-    return /([\+\-]?[0-9#\.]+)(%|px|pt|em|rem|in|cm|mm|ex|pc|vw|vh|deg|rad|turn)?/.exec(val)[2];
+    const split = /([\+\-]?[0-9#\.]+)(%|px|pt|em|rem|in|cm|mm|ex|pc|vw|vh|deg|rad|turn)?/.exec(val);
+    if (split) return split[2];
   }
 
   function getTransformUnit(propName) {
@@ -481,12 +481,12 @@
       }
     }
     return toArray(prop).map((v, i) => {
-      // Default default value should be applied only on the first tween
+      // Default delay value should be applied only on the first tween
       const delay = !i ? tweenSettings.delay : 0;
       // Use path object as a tween value
       let obj = is.obj(v) && !isPath(v) ? v : {value: v};
       // Set default delay value
-      obj.delay = obj.delay || delay;
+      if (is.und(obj.delay)) obj.delay = delay;
       return obj;
     }).map(k => mergeObjects(k, settings));
   }
@@ -559,13 +559,14 @@
 
   function getTweenProgress(tween, time) {
     const elapsed = Math.min(Math.max(time - tween.start, 0), tween.duration);
+    const path = isPath(tween.value);
     let progress = (elapsed / tween.duration);
     const round = tween.round;
     return recomposeValue(tween.to.numbers.map((number, p) => {
       const eased = tween.easing(progress, tween.elasticity);
-      const start = tween.from.numbers[p];
+      const start = path ? 0 : tween.from.numbers[p];
       let value = start + eased * (number - start);
-      if (isPath(tween.value)) value = getPathProgress(tween.value, value);
+      if (path) value = getPathProgress(tween.value, value);
       if (round) value = Math.round(value * round) / round;
       return value;
     }), tween.to.strings);
@@ -651,6 +652,11 @@
     if (instance.children) syncInstanceChildren(instance, currentTime);
   }
 
+  function getInstanceTimings(type, animations, tweenSettings) {
+    const math = (type === 'delay') ? Math.min : Math.max;
+    return arrayLength(animations) ? math.apply(Math, animations.map((anim) => anim[type] )) : tweenSettings[type];
+  }
+
   function createNewInstance(params = {}) {
     const instanceSettings = replaceObjectProps(defaultInstanceSettings, params);
     const tweenSettings = replaceObjectProps(defaultTweenSettings, params);
@@ -660,8 +666,8 @@
     return mergeObjects(instanceSettings, {
       animatables: animatables,
       animations: animations,
-      duration: arrayLength(animations) ? Math.max.apply(Math, animations.map((anim) => anim.duration )) : tweenSettings.duration,
-      delay: arrayLength(animations) ? Math.min.apply(Math, animations.map((anim) => anim.delay )) : tweenSettings.delay,
+      duration: getInstanceTimings('duration', animations, tweenSettings),
+      delay: getInstanceTimings('delay', animations, tweenSettings),
       currentTime: 0,
       progress: 0,
       paused: true,
