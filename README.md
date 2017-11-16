@@ -273,7 +273,7 @@ anime({
   translateX: 100,
   duration: 2000,
   loop: 3, // Play the animation 3 times
-  direction: 'reverse' // Play the animation in reverse
+  direction: 'reverse', // Play the animation in reverse
   autoplay: false // Animation paused by default
 });
 ```
@@ -331,7 +331,7 @@ anime({
 <img src="http://animejs.com/documentation/assets/img/readme/value-fb.gif" width="332" />
 
 Same as [function based property parameters](#function-based-property-parameters).<br>
-Get different values for every target of the animation.<br>
+Get different values for every target and property of the animation.<br>
 The function accepts 3 arguments: `target`, `index`, `targetsLength`.
 
 ```javascript
