@@ -412,11 +412,11 @@
     return unit && !/\s/g.test(val) ? unitLess + unit : unitLess;
   }
 
-  // getTotalLength() equivalent for circle, rect, polyline, polygon and line shapes. 
+  // getTotalLength() equivalent for circle, rect, polyline, polygon and line shapes.
   // adapted from https://gist.github.com/SebLambla/3e0550c496c236709744
 
   function getDistance(p1, p2) {
-    return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2)); 
+    return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
   }
 
   function getCircleLength(el) {
@@ -429,7 +429,7 @@
 
   function getLineLength(el) {
     return getDistance(
-      {x: el.getAttribute('x1'), y: el.getAttribute('y1')}, 
+      {x: el.getAttribute('x1'), y: el.getAttribute('y1')},
       {x: el.getAttribute('x2'), y: el.getAttribute('y2')}
     );
   }
@@ -484,18 +484,46 @@
     }
   }
 
-  function getPathProgress(path, progress) {
-    function point(offset = 0) {
-      const l = progress + offset >= 1 ? progress + offset : 0;
-      return path.el.getPointAtLength(l);
+  function getProgressBetweenPoints (path, progress) {
+    const points = path.points
+    let length = 0
+    if (progress > path.getTotalLength()) {
+      progress = 0
     }
-    const p = point();
-    const p0 = point(-1);
-    const p1 = point(+1);
+    for (let i = 0; i < points.length; i++) {
+      const cP = points[i]
+      const nP = points[i + 1] || points[0]
+      let distance = Math.sqrt(Math.pow((cP.x - nP.x), 2) + Math.pow((cP.y - nP.y), 2))
+      let endLength = length + distance
+      if (progress >= length && progress <= endLength) {
+        return {
+          current: cP,
+          next: nP,
+          length: {
+            start: length,
+            end: endLength
+          },
+          distance
+        }
+      }
+
+      length += distance
+    }
+  }
+
+  function getPathProgress(path, progress) {
+    const pS = getProgressBetweenPoints(path.el, progress)
+    const pB = progress - pS.length.start
+    const xInc = (pS.next.x-pS.current.x)/pS.distance
+    const yInc = (pS.next.y-pS.current.y)/pS.distance
+    const p = {
+      x: pS.current.x + (pB * xInc),
+      y: pS.current.y + (pB * yInc)
+    }
     switch (path.property) {
       case 'x': return p.x;
       case 'y': return p.y;
-      case 'angle': return Math.atan2(p1.y - p0.y, p1.x - p0.x) * 180 / Math.PI;
+      case 'angle': return Math.atan2(pS.next.y - pS.current.y, pS.next.x - pS.current.x) * 180 / Math.PI;
     }
   }
 
