@@ -484,43 +484,35 @@
     }
   }
 
-  function getProgressBetweenPoints (path, progress) {
-    const points = path.points
-    let length = 0
+  function polyfillGetPointAtLength (path, progress) {
+    const points = path.points;
+    let length = 0;
     for (let i = 0; i < points.length; i++) {
-      const cP = points[i]
-      const nP = points[i + 1] || points[0]
-      let distance = Math.sqrt(Math.pow((cP.x - nP.x), 2) + Math.pow((cP.y - nP.y), 2))
-      let endLength = length + distance
+      const cP = points[i];
+      const nP = points[i + 1] || points[0];
+      let distance = Math.sqrt(Math.pow((cP.x - nP.x), 2) + Math.pow((cP.y - nP.y), 2));
+      let endLength = length + distance;
       if (progress >= length && progress <= endLength) {
-        return {
-          current: cP,
-          next: nP,
-          length: {
-            start: length,
-            end: endLength
-          },
-          distance
-        }
+        return cP;
       }
 
-      length += distance
+      length += distance;
     }
   }
 
   function getPathProgress(path, progress) {
-    const pS = getProgressBetweenPoints(path.el, progress)
-    const pB = progress - pS.length.start
-    const xInc = (pS.next.x-pS.current.x)/pS.distance
-    const yInc = (pS.next.y-pS.current.y)/pS.distance
-    const p = {
-      x: pS.current.x + (pB * xInc),
-      y: pS.current.y + (pB * yInc)
+    function point(offset = 0) {
+      const l = progress + offset >= 1 ? progress + offset : 0;
+      const point = path.el instanceof SVGGeometryElement ? path.el.getPointAtLength(l) : polyfillGetPointAtLength(path.el, l);
+      return point;
     }
+    const p = point();
+    const p0 = point(-1);
+    const p1 = point(+1);
     switch (path.property) {
       case 'x': return p.x;
       case 'y': return p.y;
-      case 'angle': return Math.atan2(pS.next.y - pS.current.y, pS.next.x - pS.current.x) * 180 / Math.PI;
+      case 'angle': return Math.atan2(p1.y - p0.y, p1.x - p0.x) * 180 / Math.PI;
     }
   }
 
