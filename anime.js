@@ -487,9 +487,6 @@
   function getProgressBetweenPoints (path, progress) {
     const points = path.points
     let length = 0
-    if (progress > path.getTotalLength()) {
-      progress = 0
-    }
     for (let i = 0; i < points.length; i++) {
       const cP = points[i]
       const nP = points[i + 1] || points[0]
