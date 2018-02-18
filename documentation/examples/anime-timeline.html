@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Anime timeline | anime.js</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:title" content="anime.js">
+  <meta property="og:url" content="http://animejs.com">
+  <meta property="og:description" content="Javascript Animation Engine">
+  <meta property="og:image" content="http://animejs.com/documentation/assets/img/icons/og.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="anime.js">
+  <meta name="twitter:site" content="@juliangarnier">
+  <meta name="twitter:description" content="Javascript Animation Engine">
+  <meta name="twitter:image" content="http://animejs.com/documentation/assets/img/icons/twitter.png">
+  <link rel="apple-touch-icon-precomposed" href="../assets/img/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="../assets/img/icons/favicon.png" >
+  <link href="../assets/css/anime.css" rel="stylesheet">
+  <script src="../../lib/anime.min.js"></script>
+  <!-- <script src="../assets/js/anime/anime.2.2.0.js"></script> -->
+  <style>
+
+    body {
+      display: flex;
+      flex-wrap: no-wrap;
+      justify-content: space-around;
+      align-items: center;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .el {
+      width: 10px;
+      height: 10px;
+      background: #FFF;
+      margin: 10px;
+    }
+
+    .controls {
+      display: flex;
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 100px;
+      background: white;
+    }
+
+    .buttons {
+      display: flex;
+    }
+
+    .buttons button {
+      width: 100px;
+    }
+
+    .timeline {
+      display: flex;
+      flex-grow: 1;
+      padding: 20px;
+    }
+
+    .progress {
+      flex-grow: 1;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="el"></div>
+  <div class="el"></div>
+  <div class="el"></div>
+  <div class="el"></div>
+  <div class="el"></div>
+  <div class="el"></div>
+  <div class="el"></div>
+
+  <div class="controls">
+    <div class="buttons">
+      <button class="play">Play</button>
+      <button class="pause">Pause</button>
+      <button class="restart">Restart</button>
+    </div>
+    <div class="timeline">
+      <input class="progress" type="range" min="0" max="100" step=".1" value="0">
+    </div>
+  </div>
+
+</body>
+<script>
+
+  var els = document.querySelectorAll('.el');
+  var controlsProgressEl = document.querySelector('.controls .progress');
+
+  var tl = anime.timeline({
+    targets: els,
+    direction: 'alternate',
+    duration: 250,
+    delay: function(el, i) { return 75 * i; },
+    update: function(anim) {
+      controlsProgressEl.value = anim.progress;
+    },
+    begin: function(anim) {
+      console.log('tl begin');
+    },
+    complete: function(anim) {
+      console.log('tl complete');
+    }
+  });
+
+  document.querySelector('.controls .play').onclick = tl.play;
+  document.querySelector('.controls .pause').onclick = tl.pause;
+  document.querySelector('.controls .restart').onclick = tl.restart;
+
+  tl
+  .add({
+    translateY: -100,
+    scale: 8,
+    background: '#FF1461',
+    begin: function() { console.log('animation 1 began')},
+    complete: function() { console.log('animation 1 completed')}
+  })
+  .add({
+    background: '#18FF92',
+    rotate: 45,
+    begin: function() { console.log('animation 2 began')},
+    complete: function() { console.log('animation 2 completed')}
+  })
+  .add({
+    background: '#5A87FF',
+    begin: function() { console.log('animation 3 began')},
+    complete: function() { console.log('animation 3 completed')}
+  })
+  .add({
+    background: '#FBF38C',
+    rotate: 90,
+    begin: function() { console.log('animation 4 began')},
+    complete: function() { console.log('animation 4 completed')}
+  })
+  .add({
+    scaleX: 3,
+    scaleY: .5,
+    background: '#FBF38C',
+    begin: function() { console.log('animation 5 began')},
+    complete: function() { console.log('animation 5 completed')}
+  });
+
+  controlsProgressEl.addEventListener('input', function() {
+    tl.seek(tl.duration * (controlsProgressEl.value / 100));
+  });
+
+  for (var i = 0; i < els.length; i++) {
+    els[i].addEventListener('mouseenter', function() {
+      anime.remove(this);
+      this.style.backgroundColor = 'red';
+    }, false);
+  }
+
+  </script>
+  <!-- <script src="../assets/js/vendors/stats.min.js"></script> -->
+</html>
