@@ -21,31 +21,9 @@ var logoAnimation = (function() {
   var sphereEl = document.querySelector('.sphere');
   var spherePathEls = logoAnimationEl.querySelectorAll('.sphere path');
   var lineEls = document.querySelectorAll('.line');
-  var strokeColors = ['#A6FF8F','#18FF92','#1CE2B2','#5EF3FB','#5A87FF','#B08CFF', '#FF1461','#FF7C72','#FBF38C'];
-  //var strokeColors = ['#FBF38C', '#5A87FF', '#FF1461'];
-  //var strokeColors = ['#18FF92','#5EF3FB','#FF1461'];
 
   // Cache the blur filter
   sphereEl.classList.add('blurred');
-
-  var colorKeyframes = strokeColors.reverse().map(function(color, i) {
-    var value = strokeColors[i + 1] ? [color, strokeColors[i + 1]] : [color, strokeColors[0]];
-    return {value: value, duration: 180}
-  });
-
-  var neonColorsAnimation = anime.timeline({
-    easing: 'linear',
-    loop: false,
-    autoplay: false
-  });
-
-  for (var i = 0; i < lineEls.length; i++) {
-    colorKeyframes.push(colorKeyframes.shift());
-    neonColorsAnimation.add({
-      targets: lineEls[i],
-      stroke: colorKeyframes
-    }, 0);
-  }
 
   fitToScreen(logoAnimationEl, 64);
 
@@ -127,39 +105,28 @@ var logoAnimation = (function() {
 
   logoAnimationTL
   .add({
-    targets: '.logo-letter',
-    translateX: function(el) {
-      if (el.classList.contains('letter-a')) return [-256, 56];
-      if (el.classList.contains('letter-n')) return [56, 56];
-      if (el.classList.contains('letter-i')) return [56, 56];
-      if (el.classList.contains('letter-m')) return [0, 0];
-      if (el.classList.contains('letter-e')) return [256, -56];
+    targets: ['.letter-i .line', '.letter-n .line', '.letter-m .line', '.letter-a .line', '.letter-e .line'],
+    strokeWidth: {
+      value: [1, 4], 
+      duration: 400, 
+      easing: 'easeInOutQuad'
     },
-    translateY: function(el) {
-      if (el.classList.contains('letter-a')) return [0, 0];
-      if (el.classList.contains('letter-n')) return [200, 0];
-      if (el.classList.contains('letter-i')) return [-200, 0];
-      if (el.classList.contains('letter-m')) return [200, 0];
-      if (el.classList.contains('letter-e')) return [0, 0];
+    stroke: {
+      value: ['#FFF', '#FF1461'],
+      duration: 1000
     },
-    easing: 'easeOutElastic(.8, 1.5)',
-    duration: 1050,
-    delay: function(el, i) { return i * 90 },
-  })
-  .add({
-    targets: lineEls,
-    strokeWidth: [0, 4],
     strokeDashoffset: [anime.setDashoffset, 0],
     easing: 'easeInOutQuad',
-    duration: function(el) { return 200 + getPathDuration(el, 1.5) },
-    delay: function(el, i, t) { return ((Math.ceil((i+1)/3) * 1) * 1) + (i * 30) },
+    duration: function(el) { return 400 + getPathDuration(el, 1) },
+    delay: function(el, i, t) { return (Math.round(i / 1) + (getPathDuration(el, 1.2) - 200)) },
+    endDelay: 200
   }, 0)
   .add({
     targets: '.letter-m .line',
     strokeDasharray: 0,
     easing: 'linear',
     duration: .1,
-  }, '-=420')
+  }, '-=300')
   .add({
     targets: '.dot',
     easing: 'cubicBezier(0.350, 0.560, 0.305, 1)',
@@ -224,8 +191,7 @@ var logoAnimation = (function() {
     strokeDashoffset: [anime.setDashoffset, 0],
     duration: function(el) { return getPathDuration(el, 1.5) },
     easing: 'cubicBezier(0.400, 0.530, 0.070, 1)',
-    delay: function(el, i) { return Math.round(i / 2) * 150 },
-    complete: neonColorsAnimation.pause
+    delay: function(el, i) { return Math.round(i / 2) * 150 }
   }, '-=1100')
   .add({
     targets: '.letter-i .line',

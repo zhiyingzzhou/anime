@@ -123,25 +123,8 @@ a {
   transform: translate3d(0,0,0);
 }
 
-.letter-a .line:nth-child(1) { stroke: #1CE2B2; }
-.letter-a .line:nth-child(2) { stroke: #5EF3FB; }
-.letter-a .line:nth-child(3) { stroke: #B08CFF; }
-
-.letter-n .line:nth-child(1) { stroke: #5A87FF; }
-.letter-n .line:nth-child(2) { stroke: #FBF38C; }
-.letter-n .line:nth-child(3) { stroke: #FF7C72; }
-
-.letter-i .line:nth-child(1) { stroke: #FB89FB; }
-.letter-i .line:nth-child(2) { stroke: #FF1461; }
-.letter-i .line:nth-child(3) { stroke: #FF48AB; }
-
-.letter-m .line:nth-child(1) { stroke: #FF7C72; }
-.letter-m .line:nth-child(2) { stroke: #B08CFF; }
-.letter-m .line:nth-child(3) { stroke: #1CE2B2; }
-
-.letter-e .line:nth-child(1) { stroke: #18FF92; }
-.letter-e .line:nth-child(2) { stroke: #5EF3FB; }
-.letter-e .line:nth-child(3) { stroke: #5A87FF; }
+.line:nth-child(1) { stroke: #5EF3FB; }
+.line:nth-child(2) { stroke: #5A87FF; }
 
 .sphere {
   overflow: visible;
@@ -157,16 +140,7 @@ a {
 /* Logo nav */
 
 .logo-nav {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  width: 100%;
-  max-width: 600px;
-  margin-bottom: 32px;
-}
-
-.logo-nav {
+  opacity: 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -235,6 +209,7 @@ a {
 }
 
 .credits {
+  opacity: 0;
   margin-bottom: 20px;
   text-align: center;
   font-size: 12px;
