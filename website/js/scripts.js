@@ -22,8 +22,28 @@ var logoAnimation = (function() {
   var spherePathEls = logoAnimationEl.querySelectorAll('.sphere path');
   var lineEls = document.querySelectorAll('.line');
 
-  // Cache the blur filter
-  sphereEl.classList.add('blurred');
+  var strokeColors = ['#A6FF8F','#18FF92','#1CE2B2','#5EF3FB','#5A87FF','#B08CFF', '#FF1461','#FF7C72','#FBF38C'];
+  // var strokeColors = ['#FBF38C', '#5A87FF', '#FF1461'];
+  //var strokeColors = ['#5A87FF','#FF1461','#FBF38C'];
+
+  var colorKeyframes = strokeColors.reverse().map(function(color, i) {
+    var value = strokeColors[i + 1] ? [color, strokeColors[i + 1]] : [color, strokeColors[0]];
+    return {value: value, duration: 180}
+  });
+
+  var neonColorsAnimation = anime.timeline({
+    easing: 'linear',
+    loop: true,
+    autoplay: false
+  });
+
+  for (var i = 0; i < lineEls.length; i++) {
+    colorKeyframes.push(colorKeyframes.shift());
+    neonColorsAnimation.add({
+      targets: lineEls[i],
+      stroke: colorKeyframes
+    }, 0);
+  }
 
   fitToScreen(logoAnimationEl, 64);
 
@@ -54,11 +74,8 @@ var logoAnimation = (function() {
             {value: 30, duration: 750, easing: 'easeOutSine'},
             {value: 10, duration: 800, easing: 'easeInOutSine'}
           ],
-          delay: 950,
-          begin: function() {
-            sphereEl.classList.add('blurred');
-          }
-        })
+          delay: 750
+        });
       }
     });
 
@@ -97,35 +114,27 @@ var logoAnimation = (function() {
 
   var logoAnimationTL = anime.timeline({
     easing: 'easeOutSine',
-    autoplay: false,
-    begin: function() {
-      sphereEl.classList.remove('blurred');
-    }
+    autoplay: false
   });
 
   logoAnimationTL
   .add({
     targets: ['.letter-i .line', '.letter-n .line', '.letter-m .line', '.letter-a .line', '.letter-e .line'],
     strokeWidth: {
-      value: [1, 4], 
-      duration: 400, 
-      easing: 'easeInOutQuad'
-    },
-    stroke: {
-      value: ['#FFF', '#FF1461'],
-      duration: 1000
+      value: [1, 4],
+      easing: 'easeInOutSine'
     },
     strokeDashoffset: [anime.setDashoffset, 0],
     easing: 'easeInOutQuad',
-    duration: function(el) { return 400 + getPathDuration(el, 1) },
-    delay: function(el, i, t) { return (Math.round(i / 1) + (getPathDuration(el, 1.2) - 200)) },
-    endDelay: 200
+    duration: function(el) { return anime.random(400, 800) },
+    delay: function(el) { return anime.random(0, 400) },
+    endDelay: 300
   }, 0)
   .add({
     targets: '.letter-m .line',
     strokeDasharray: 0,
     easing: 'linear',
-    duration: .1,
+    duration: .1
   }, '-=300')
   .add({
     targets: '.dot',

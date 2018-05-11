@@ -6,7 +6,7 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 
 html,
 body {
-  background-color: #191923; /* Black */
+  background-color: #0B0B17; /* Black */
 /*  background-image: linear-gradient(0deg, #0E0E12 0%, #191924 100%);*/
 }
 
@@ -104,7 +104,6 @@ a {
 
 @media all and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) {
   .blurred { filter: url(#blur); }
-  .logo-letter.blurred { filter: url(#letterBlur); }
 }
 
 .bounce {
@@ -123,8 +122,8 @@ a {
   transform: translate3d(0,0,0);
 }
 
-.line:nth-child(1) { stroke: #5EF3FB; }
-.line:nth-child(2) { stroke: #5A87FF; }
+/*.line:nth-child(1) { stroke: #5EF3FB; }
+.line:nth-child(2) { stroke: #5A87FF; }*/
 
 .sphere {
   overflow: visible;
@@ -135,6 +134,7 @@ a {
   height: 400px;
   margin: -200px 0 0 -200px;
   transform: translate3d(0,0,0);
+  backface-visibility: hidden;
 }
 
 /* Logo nav */
