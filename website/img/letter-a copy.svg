@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 128" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <path id="path-1" d="M96 48H32c-8.837-.134-16 7.009-16 16v32c0 8.857 7.163 16 16 16h80c8.837 0 16-7.143 16-16V32c0-8.857-7.163-16-16-16H16"/>
+    <filter id="filter-2" width="130.4%" height="135.4%" x="-15.2%" y="-17.7%" filterUnits="objectBoundingBox">
+      <feMorphology radius="13" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"/>
+      <feOffset in="shadowSpreadOuter1" result="shadowOffsetOuter1"/>
+      <feMorphology radius="13" in="SourceAlpha" result="shadowInner"/>
+      <feOffset in="shadowInner" result="shadowInner"/>
+      <feComposite in="shadowOffsetOuter1" in2="shadowInner" operator="out" result="shadowOffsetOuter1"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" in="shadowOffsetOuter1"/>
+    </filter>
+    <filter id="filter-3" width="130.4%" height="135.4%" x="-15.2%" y="-17.7%" filterUnits="objectBoundingBox">
+      <feGaussianBlur stdDeviation="1.5" in="SourceAlpha" result="shadowBlurInner1"/>
+      <feOffset dy="1" in="shadowBlurInner1" result="shadowOffsetInner1"/>
+      <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"/>
+      <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0" in="shadowInnerInner1"/>
+    </filter>
+  </defs>
+  <g id="letter-a-copy" fill="none" fill-rule="evenodd" stroke-linecap="square">
+    <g id="fill">
+      <use fill="black" filter="url(#filter-2)" xlink:href="#path-1"/>
+      <use fill="black" filter="url(#filter-3)" xlink:href="#path-1"/>
+      <use stroke="#191924" stroke-width="22" xlink:href="#path-1"/>
+    </g>
+  </g>
+</svg>

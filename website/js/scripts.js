@@ -26,24 +26,24 @@ var logoAnimation = (function() {
   // var strokeColors = ['#FBF38C', '#5A87FF', '#FF1461'];
   //var strokeColors = ['#5A87FF','#FF1461','#FBF38C'];
 
-  var colorKeyframes = strokeColors.reverse().map(function(color, i) {
-    var value = strokeColors[i + 1] ? [color, strokeColors[i + 1]] : [color, strokeColors[0]];
-    return {value: value, duration: 180}
-  });
+  // var colorKeyframes = strokeColors.reverse().map(function(color, i) {
+  //   var value = strokeColors[i + 1] ? [color, strokeColors[i + 1]] : [color, strokeColors[0]];
+  //   return {value: value, duration: 180}
+  // });
 
-  var neonColorsAnimation = anime.timeline({
-    easing: 'linear',
-    loop: true,
-    autoplay: false
-  });
+  // var neonColorsAnimation = anime.timeline({
+  //   easing: 'linear',
+  //   loop: true,
+  //   autoplay: false
+  // });
 
-  for (var i = 0; i < lineEls.length; i++) {
-    colorKeyframes.push(colorKeyframes.shift());
-    neonColorsAnimation.add({
-      targets: lineEls[i],
-      stroke: colorKeyframes
-    }, 0);
-  }
+  // for (var i = 0; i < lineEls.length; i++) {
+  //   colorKeyframes.push(colorKeyframes.shift());
+  //   neonColorsAnimation.add({
+  //     targets: lineEls[i],
+  //     stroke: colorKeyframes
+  //   }, 0);
+  // }
 
   fitToScreen(logoAnimationEl, 64);
 
@@ -110,7 +110,7 @@ var logoAnimation = (function() {
 
   }
 
-  //anime.speed = .2;
+  // anime.speed = .2;
 
   var logoAnimationTL = anime.timeline({
     easing: 'easeOutSine',
@@ -119,23 +119,31 @@ var logoAnimation = (function() {
 
   logoAnimationTL
   .add({
-    targets: ['.letter-i .line', '.letter-n .line', '.letter-m .line', '.letter-a .line', '.letter-e .line'],
-    strokeWidth: {
-      value: [1, 4],
-      easing: 'easeInOutSine'
-    },
-    strokeDashoffset: [anime.setDashoffset, 0],
-    easing: 'easeInOutQuad',
-    duration: function(el) { return anime.random(400, 800) },
-    delay: function(el) { return anime.random(0, 400) },
-    endDelay: 300
-  }, 0)
+    targets: '.logo-letter svg',
+    transformOrigin: ['50% 100% 0px', '50% 100% 0px'],
+    translateY: [
+      {value: [130, -64], duration: 240, endDelay: 20, easing: 'easeOutSine'},
+      {value: 4, duration: 160, easing: 'easeInQuad'},
+      {value: 0, duration: 160, easing: 'easeOutQuad'}
+    ],
+    scaleX: [
+      {value: [.7, .8], duration: 230, easing: 'easeOutSine'},
+      {value: 1.065, duration: 160, delay: 115, easing: 'easeInOutSine'},
+      {value: 1, duration: 190, delay: 25, easing: 'easeOutQuad'}
+    ],
+    scaleY: [
+      {value: [.8, 1.3], duration: 160, easing: 'easeOutSine'},
+      {value: .7, duration: 160, delay: 225, easing: 'easeInOutSine'},
+      {value: 1, duration: 210, delay: 25, easing: 'easeOutQuad'}
+    ],
+    delay: function(el, i) { return i * 60 }
+  }, '+=200')
   .add({
     targets: '.letter-m .line',
     strokeDasharray: 0,
     easing: 'linear',
     duration: .1
-  }, '-=300')
+  })
   .add({
     targets: '.dot',
     easing: 'cubicBezier(0.350, 0.560, 0.305, 1)',
@@ -144,13 +152,13 @@ var logoAnimation = (function() {
     translateZ: 0,
     scaleY: [4, .7],
     scaleX: { value: 1.3, delay: 100, duration: 200},
-  }, '-=420')
+  }, '-=380')
   .add({
     targets: '.letter-m .line',
     easing: 'easeOutElastic(1, .8)',
     duration: 600,
     d: function(el) { return el.dataset.d2 }
-  }, '-=215')
+  }, '-=180')
   .add({
     targets: ['.letter-a', '.letter-n', '.letter-i'],
     translateX: 0,
@@ -180,6 +188,11 @@ var logoAnimation = (function() {
     easing: 'cubicBezier(0, .74, 1, .255)',
     duration: 800,
   }, '-=660')
+  .add({
+    targets: '.letter-i rect',
+    opacity: 0,
+    duration: 1,
+  })
   .add({
     targets: '.dot',
     scaleY: 1,
