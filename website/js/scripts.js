@@ -22,29 +22,6 @@ var logoAnimation = (function() {
   var spherePathEls = logoAnimationEl.querySelectorAll('.sphere path');
   var lineEls = document.querySelectorAll('.line');
 
-  var strokeColors = ['#A6FF8F','#18FF92','#1CE2B2','#5EF3FB','#5A87FF','#B08CFF', '#FF1461','#FF7C72','#FBF38C'];
-  // var strokeColors = ['#FBF38C', '#5A87FF', '#FF1461'];
-  //var strokeColors = ['#5A87FF','#FF1461','#FBF38C'];
-
-  // var colorKeyframes = strokeColors.reverse().map(function(color, i) {
-  //   var value = strokeColors[i + 1] ? [color, strokeColors[i + 1]] : [color, strokeColors[0]];
-  //   return {value: value, duration: 180}
-  // });
-
-  // var neonColorsAnimation = anime.timeline({
-  //   easing: 'linear',
-  //   loop: true,
-  //   autoplay: false
-  // });
-
-  // for (var i = 0; i < lineEls.length; i++) {
-  //   colorKeyframes.push(colorKeyframes.shift());
-  //   neonColorsAnimation.add({
-  //     targets: lineEls[i],
-  //     stroke: colorKeyframes
-  //   }, 0);
-  // }
-
   fitToScreen(logoAnimationEl, 64);
 
   anime.set('.fill', {opacity: 0});
@@ -68,13 +45,17 @@ var logoAnimation = (function() {
         return i * 35
       },
       begin: function() {
+        document.body.classList.add('intro-played');
+      },
+      complete: function() {
+        sphereEl.classList.add('is-blurred');
         anime({
           targets: '#blur feGaussianBlur',
           stdDeviation: [
             {value: 30, duration: 750, easing: 'easeOutSine'},
             {value: 10, duration: 800, easing: 'easeInOutSine'}
           ],
-          delay: 750
+          delay: 1000
         });
       }
     });
@@ -119,16 +100,19 @@ var logoAnimation = (function() {
 
   logoAnimationTL
   .add({
-    targets: '.logo-letter svg',
+    targets: '.bounced',
     transformOrigin: ['50% 100% 0px', '50% 100% 0px'],
     translateY: [
-      {value: [130, -64], duration: 240, endDelay: 20, easing: 'easeOutSine'},
+      {
+        value: function(el) { return el.classList.contains('i-dot') ? [0, 20] : [128, -80] },
+        duration: 240, endDelay: 20, easing: 'cubicBezier(0.225, 1, 0.915, 0.980)'
+      },
       {value: 4, duration: 160, easing: 'easeInQuad'},
       {value: 0, duration: 160, easing: 'easeOutQuad'}
     ],
     scaleX: [
-      {value: [.7, .8], duration: 230, easing: 'easeOutSine'},
-      {value: 1.065, duration: 160, delay: 115, easing: 'easeInOutSine'},
+      {value: [.75, .85], duration: 230, easing: 'easeOutSine'},
+      {value: 1.076, duration: 160, delay: 85, easing: 'easeInOutSine'},
       {value: 1, duration: 190, delay: 25, easing: 'easeOutQuad'}
     ],
     scaleY: [
@@ -136,14 +120,9 @@ var logoAnimation = (function() {
       {value: .7, duration: 160, delay: 225, easing: 'easeInOutSine'},
       {value: 1, duration: 210, delay: 25, easing: 'easeOutQuad'}
     ],
-    delay: function(el, i) { return i * 60 }
-  }, '+=200')
-  .add({
-    targets: '.letter-m .line',
-    strokeDasharray: 0,
-    easing: 'linear',
-    duration: .1
-  })
+    translateZ: [0, 0],
+    delay: function(el, i) { return (i > 2 ? (i - 1) : i) * 30 }
+  }, '+=300')
   .add({
     targets: '.dot',
     easing: 'cubicBezier(0.350, 0.560, 0.305, 1)',
@@ -240,40 +219,6 @@ var logoAnimation = (function() {
     duration: 1000,
     delay: 500,
     begin: sphereAnimation
-  }, '-=1000')
-  .add({
-    targets: '.logo-links a',
-    opacity: [0, 1],
-    easing: 'linear',
-    duration: 750,
-    delay: function(el, i, t) { return (t - i) * 75 }
-  }, '+=1000')
-  .add({
-    targets: '.credits',
-    opacity: [0, 1],
-    duration: 500,
-    easing: 'easeOutCubic'
-  }, '-=500')
-  .add({
-    targets: '.version',
-    innerHTML: parseFloat(anime.version, 10),
-    duration: 2000,
-    easing: 'easeOutCubic',
-    update: function(a) {
-      var value = a.animatables[0].target.innerHTML;
-      value = parseFloat(value).toFixed(1);
-      a.animatables[0].target.innerHTML = value;
-    }
-  }, '-=500')
-  .add({
-    targets: '.date',
-    innerHTML: function() { 
-      var d = new Date(); 
-      return d.getFullYear(); 
-    },
-    round: 1,
-    duration: 2500,
-    easing: 'easeOutCubic'
   }, '-=1000');
 
   logoAnimationEl.classList.add('is-visible');

@@ -6,19 +6,14 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 
 html,
 body {
-  background-color: #0B0B17; /* Black */
-/*  background-image: linear-gradient(0deg, #0E0E12 0%, #191924 100%);*/
+  background-color: #0B0B17;
 }
 
 body {
-  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  width: 100%;
-  min-height: 100vh;
   color: #FFF;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-family: RoobertTRIAL-Regular;
@@ -52,16 +47,16 @@ a {
 /* Logo animation */
 
 .logo-animation {
-  flex-shrink: 0;
-  position: relative;
-  visibility: hidden;
-  display: flex;
-  flex-direction: column;
   overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  visibility: hidden;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 740px;
-  height: 480px;
+  height: 520px;
 }
 
 .logo-animation.is-visible {
@@ -82,7 +77,6 @@ a {
   width: 100%;
   height: 512px;
   margin-top: -352px;
-  margin-bottom: 12px;
 }
 
 .anime-logo h2 {
@@ -100,7 +94,7 @@ a {
   display: flex;
   align-items: flex-end;
   overflow: hidden;
-  height: 256px;
+  height: 100%;
   padding-bottom: 24px;
   margin-bottom: -20px;
   transform: translate3d(0,0,0);
@@ -109,7 +103,7 @@ a {
 /* blur effects only on Chrome */
 
 @media all and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) {
-  .blurred { filter: url(#blur); }
+  .is-blurred { filter: url(#blur); }
 }
 
 .bounce {
@@ -121,12 +115,14 @@ a {
 
 .dot {
   position: absolute;
+  z-index: 10;
   top: 0;
   left: 0;
   width: 24px;
   height: 24px;
   margin: -16px 0 0 -12px;
   background-color: #FFF;
+  transform: translate3d(0,0,0);
 }
 
 .filters {
@@ -139,14 +135,18 @@ a {
 }
 
 .line {
-  stroke: #000;
+  stroke: #0B0B17;
   stroke-width: 20px;
   stroke-linecap: square;
 }
 
 .outline {
-  stroke: #FFF;
   stroke-width: 24px;
+}
+
+.outline,
+.i-dot {
+  stroke: #FFF;
 }
 
 .fill {
@@ -169,20 +169,16 @@ a {
 /* Logo nav */
 
 .logo-nav {
-  opacity: 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   position: relative;
-  width: 100%;
-  max-width: 600px;
-  margin-bottom: 32px;
+  margin-bottom: 64px;
 }
 
 .logo-links {
   display: flex;
   flex-direction: column;
-  width: 100%;
 }
 
 @media (min-width: 800px) {
@@ -195,6 +191,7 @@ a {
   flex: 1;
   display: block;
   position: relative;
+  min-width: 220px;
   height: 44px;
   margin: 0 8px;
   padding: 0 8px;
@@ -204,7 +201,7 @@ a {
   font-weight: bold;
   line-height: 41px;
   letter-spacing: .05em;
-  border: 1px solid #FFF;
+  border: 2px solid #FFF;
   color: #FFF;
   transition: color .2s ease-in-out;
 }
@@ -237,21 +234,40 @@ a {
   transform-origin: 0% 50%;
 }
 
-.credits {
+/* Intro played */
+
+.intro-header {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: #0B0B17;
+  transform: translate3d(0, calc(calc(100vh - 620px) / 2), 0);
+  transition: transform 1s cubic-bezier(0.590, 0.225, 0.295, 0.985) .95s;
+}
+
+.main {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #191924;
+  transform: translate3d(0, calc(100vh - 620px), 0);
+  transition: transform 1s cubic-bezier(0.590, 0.225, 0.295, 0.985) .95s;
+}
+
+.intro-played .intro-header,
+.intro-played .main {
+  transform: translate3d(0, 0, 0);
+}
+
+.logo-nav {
   opacity: 0;
-  margin-bottom: 20px;
-  text-align: center;
-  font-size: 12px;
-  line-height: 24px;
-  letter-spacing: .05em;
-  color: #8C8C91;
+  transition: opacity 1s ease .75s;
 }
 
-.credits a {
-  transition: color .5s ease;
+.intro-played .logo-nav {
+  opacity: 1;
 }
 
-.credits a:hover {
-  color: #FFF;
-  transition: none;
-}
+/* Site */
