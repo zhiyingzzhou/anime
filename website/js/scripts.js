@@ -49,13 +49,13 @@ var logoAnimation = (function() {
       },
       complete: function() {
         sphereEl.classList.add('is-blurred');
-        anime({
-          targets: '#blur feGaussianBlur',
-          stdDeviation: [
-            {value: [0, 20], duration: 500, easing: 'easeOutSine'},
-            {value: 10, duration: 500, easing: 'easeInOutSine'}
-          ]
-        });
+        // anime({
+        //   targets: '#blur feGaussianBlur',
+        //   stdDeviation: [
+        //     {value: [0, 20], duration: 500, easing: 'easeOutSine'},
+        //     {value: 10, duration: 500, easing: 'easeInOutSine'}
+        //   ]
+        // });
       }
     });
 
@@ -99,27 +99,28 @@ var logoAnimation = (function() {
   logoAnimationTL
   .add({
     targets: '.bounced',
+    stroke: { value: ['#5EF3FB', '#5A87FF'], duration: 400 },
     transformOrigin: ['50% 100% 0px', '50% 100% 0px'],
     translateY: [
       {
         value: function(el) { return el.classList.contains('i-dot') ? [0, 20] : [128, -96] },
-        duration: 240, endDelay: 30, easing: 'cubicBezier(0.225, 1, 0.915, 0.980)'
+        duration: 200, endDelay: 20, easing: 'cubicBezier(0.225, 1, 0.915, 0.980)'
       },
-      {value: 4, duration: 160, easing: 'easeInQuad'},
-      {value: 0, duration: 160, easing: 'easeOutQuad'}
+      {value: 4, duration: 120, easing: 'easeInQuad'},
+      {value: 0, duration: 120, easing: 'easeOutQuad'}
     ],
     scaleX: [
-      {value: [.75, .85], duration: 230, easing: 'easeOutSine'},
-      {value: 1.076, duration: 140, delay: 95, easing: 'easeInOutSine'},
-      {value: 1, duration: 200, delay: 25, easing: 'easeOutQuad'}
+      {value: [.75, .85], duration: 190, easing: 'easeOutSine'},
+      {value: 1.076, duration: 120, delay: 85, easing: 'easeInOutSine'},
+      {value: 1, duration: 160, delay: 25, easing: 'easeOutQuad'}
     ],
     scaleY: [
-      {value: [.8, 1.3], duration: 160, easing: 'easeOutSine'},
-      {value: .7, duration: 140, delay: 225, easing: 'easeInOutSine'},
-      {value: 1, duration: 220, delay: 25, easing: 'easeOutQuad'}
+      {value: [.8, 1.3], duration: 120, easing: 'easeOutSine'},
+      {value: .7, duration: 120, delay: 180, easing: 'easeInOutSine'},
+      {value: 1, duration: 180, delay: 25, easing: 'easeOutQuad'}
     ],
     translateZ: [0, 0],
-    delay: function(el, i) { return (i > 2 ? (i - 1) : i) * 100 }
+    delay: function(el, i) { return (i > 2 ? (i - 1) : i) * 40 }
   }, '+=300')
   .add({
     targets: '.dot',
@@ -129,13 +130,13 @@ var logoAnimation = (function() {
     translateZ: 0,
     scaleY: [4, .7],
     scaleX: { value: 1.3, delay: 100, duration: 200},
-  }, '-=380')
+  }, '-=490')
   .add({
     targets: '.letter-m .line',
     easing: 'easeOutElastic(1, .8)',
     duration: 600,
     d: function(el) { return el.dataset.d2 }
-  }, '-=180')
+  }, '-=290')
   .add({
     targets: ['.letter-a', '.letter-n', '.letter-i'],
     translateX: 0,

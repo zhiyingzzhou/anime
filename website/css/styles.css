@@ -109,12 +109,6 @@ a {
   transform: translate3d(0,0,0);
 }
 
-/* blur effects only on Chrome */
-
-@media all and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) {
-  .is-blurred { filter: url(#blur); }
-}
-
 .bounce {
   overflow: visible;
   position: absolute;
@@ -144,7 +138,8 @@ a {
 }
 
 .line {
-  stroke: #0B0B17;
+  /*stroke: #0B0B17;*/
+  /*stroke: #5A87FF;*/
   stroke-width: 20px;
   stroke-linecap: square;
 }
@@ -155,15 +150,16 @@ a {
 
 .outline,
 .i-dot {
-  stroke: #FFF;
+  /*stroke: #FFF;*/
+  /*stroke: #5A87FF;*/
 }
 
-.letter-a .outline { stroke: #61C3FF; }
+/*.letter-a .outline { stroke: #61C3FF; }
 .letter-n .outline { stroke: #FF1461; }
 .letter-i .outline,
 .letter-i .i-dot { stroke: #18FF92; }
-.letter-m .outline { stroke: #61C3FF; }
-.letter-e .outline { stroke: #FF1461; }
+.letter-m .outline { stroke: #FBF38C; }
+.letter-e .outline { stroke: #B08CFF; }*/
 
 .fill {
   stroke: #FFF;
@@ -175,11 +171,42 @@ a {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 400px;
-  height: 400px;
-  margin: -200px 0 0 -200px;
+  width: 420px;
+  height: 420px;
+  margin: -210px 0 0 -210px;
   transform: translate3d(0,0,0);
   backface-visibility: hidden;
+}
+
+.sphere svg {
+  opacity: .92;
+}
+
+@media all and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) {
+  /*.is-blurred svg { filter: url(#blur); }*/
+}
+
+@keyframes sphere-animation {
+  from { opacity: .4; }
+  to { opacity: 1; }
+}
+
+.sphere:after {
+  content: "";
+  opacity: 0;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(../img/blurred-bg.png);
+  background-size: cover;
+}
+
+.sphere.is-blurred:after {
+  content: "";
+  animation: sphere-animation 1.5s cubic-bezier(0.74, 0.43, 0.49, 0.9) alternate infinite;
 }
 
 /* Logo nav */
@@ -212,7 +239,7 @@ a {
   /*text-transform: uppercase;*/
 }
 
-/* Intro played */
+/* Intro transition */
 
 .intro-header {
   transform: translate3d(0, calc(calc(100vh - 568px) / 2), 0);
@@ -227,18 +254,24 @@ a {
   transform: translate3d(0, 50px, 0);
 }
 
-.intro-played .intro-header,
-.intro-played .main {
-  transform: translate3d(0, 0, 0);
-  transition: transform 1s cubic-bezier(0.590, 0.225, 0.295, 0.985);
-  transition-delay: 2.15s;
-}
-
 .intro-played .logo-nav {
   opacity: .8;
   transform: translate3d(0, 0, 0);
-  transition: opacity .75s cubic-bezier(0.590, 0.225, 0.295, 0.985), transform .75s cubic-bezier(0.590, 0.225, 0.295, 0.985);
-  transition-delay: 2.05s;
+  transition: opacity 1.5s cubic-bezier(0.590, 0.225, 0.295, 0.985), 
+              transform 1.5s cubic-bezier(0.590, 0.225, 0.295, 0.985);
+  transition-delay: 1s;
+}
+
+.intro-played .main {
+  transform: translate3d(0, 0, 0);
+  transition: transform 1.75s cubic-bezier(0.590, 0.225, 0.295, 0.985);
+  transition-delay: 1s;
+}
+
+.intro-played .intro-header {
+  transform: translate3d(0, 0, 0);
+  transition: transform 2s cubic-bezier(0.590, 0.225, 0.295, 0.985);
+  transition-delay: 1s;
 }
 
 /* Site */
