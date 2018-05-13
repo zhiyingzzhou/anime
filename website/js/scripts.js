@@ -52,10 +52,9 @@ var logoAnimation = (function() {
         anime({
           targets: '#blur feGaussianBlur',
           stdDeviation: [
-            {value: 30, duration: 750, easing: 'easeOutSine'},
-            {value: 10, duration: 800, easing: 'easeInOutSine'}
-          ],
-          delay: 1000
+            {value: [0, 20], duration: 500, easing: 'easeOutSine'},
+            {value: 10, duration: 500, easing: 'easeInOutSine'}
+          ]
         });
       }
     });
@@ -70,7 +69,6 @@ var logoAnimation = (function() {
         strokeWidth: [4, 16],
         translateX: [-10, 10],
         translateY: [-10, 10],
-        translateZ: 0,
         easing: 'easeOutSine',
         delay: 150,
         duration: 1500,
@@ -104,24 +102,24 @@ var logoAnimation = (function() {
     transformOrigin: ['50% 100% 0px', '50% 100% 0px'],
     translateY: [
       {
-        value: function(el) { return el.classList.contains('i-dot') ? [0, 20] : [128, -80] },
-        duration: 240, endDelay: 20, easing: 'cubicBezier(0.225, 1, 0.915, 0.980)'
+        value: function(el) { return el.classList.contains('i-dot') ? [0, 20] : [128, -96] },
+        duration: 240, endDelay: 30, easing: 'cubicBezier(0.225, 1, 0.915, 0.980)'
       },
       {value: 4, duration: 160, easing: 'easeInQuad'},
       {value: 0, duration: 160, easing: 'easeOutQuad'}
     ],
     scaleX: [
       {value: [.75, .85], duration: 230, easing: 'easeOutSine'},
-      {value: 1.076, duration: 160, delay: 85, easing: 'easeInOutSine'},
-      {value: 1, duration: 190, delay: 25, easing: 'easeOutQuad'}
+      {value: 1.076, duration: 140, delay: 95, easing: 'easeInOutSine'},
+      {value: 1, duration: 200, delay: 25, easing: 'easeOutQuad'}
     ],
     scaleY: [
       {value: [.8, 1.3], duration: 160, easing: 'easeOutSine'},
-      {value: .7, duration: 160, delay: 225, easing: 'easeInOutSine'},
-      {value: 1, duration: 210, delay: 25, easing: 'easeOutQuad'}
+      {value: .7, duration: 140, delay: 225, easing: 'easeInOutSine'},
+      {value: 1, duration: 220, delay: 25, easing: 'easeOutQuad'}
     ],
     translateZ: [0, 0],
-    delay: function(el, i) { return (i > 2 ? (i - 1) : i) * 30 }
+    delay: function(el, i) { return (i > 2 ? (i - 1) : i) * 100 }
   }, '+=300')
   .add({
     targets: '.dot',
