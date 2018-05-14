@@ -66,7 +66,7 @@ var logoAnimation = (function() {
     for (var i = 0; i < pathLength; i++) {
       aimations.push(anime({
         targets: spherePathEls[i],
-        strokeWidth: [4, 16],
+        strokeWidth: [4, 14],
         translateX: [-10, 10],
         translateY: [-10, 10],
         easing: 'easeOutSine',
@@ -98,30 +98,33 @@ var logoAnimation = (function() {
 
   logoAnimationTL
   .add({
+    targets: '.bounced .line',
+    stroke: ['#5EF3FB', '#5A87FF'],
+    duration: 400,
+    delay: function(el, i) { return (i * 80) }
+  }, 300)
+  .add({
     targets: '.bounced',
-    stroke: { value: ['#5EF3FB', '#5A87FF'], duration: 400 },
     transformOrigin: ['50% 100% 0px', '50% 100% 0px'],
     translateY: [
-      {
-        value: function(el) { return el.classList.contains('i-dot') ? [0, 20] : [128, -96] },
-        duration: 200, endDelay: 20, easing: 'cubicBezier(0.225, 1, 0.915, 0.980)'
-      },
+      {value: [128, -128], duration: 200, endDelay: 20, easing: 'cubicBezier(0.225, 1, 0.915, 0.980)'},
       {value: 4, duration: 120, easing: 'easeInQuad'},
-      {value: 0, duration: 120, easing: 'easeOutQuad'}
+      {value: 1, duration: 120, easing: 'easeOutQuad'}
     ],
     scaleX: [
-      {value: [.75, .85], duration: 190, easing: 'easeOutSine'},
+      {value: [.55, .85], duration: 190, easing: 'easeOutSine'},
       {value: 1.076, duration: 120, delay: 85, easing: 'easeInOutSine'},
-      {value: 1, duration: 160, delay: 25, easing: 'easeOutQuad'}
+      {value: 1, duration: 260, delay: 25, easing: 'easeOutQuad'}
     ],
     scaleY: [
       {value: [.8, 1.3], duration: 120, easing: 'easeOutSine'},
       {value: .7, duration: 120, delay: 180, easing: 'easeInOutSine'},
-      {value: 1, duration: 180, delay: 25, easing: 'easeOutQuad'}
+      {value: 1.05, duration: 180, delay: 25, easing: 'easeOutQuad'},
+      {value: 1, duration: 250, delay: 15, easing: 'easeOutQuad'}
     ],
     translateZ: [0, 0],
-    delay: function(el, i) { return (i > 2 ? (i - 1) : i) * 40 }
-  }, '+=300')
+    delay: function(el, i) { return (i * 80) }
+  }, 300)
   .add({
     targets: '.dot',
     easing: 'cubicBezier(0.350, 0.560, 0.305, 1)',

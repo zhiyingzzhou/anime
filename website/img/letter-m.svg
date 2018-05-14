@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 128">
-  <g id="letter-m" fill="none" fill-rule="evenodd" stroke-linecap="square">
-    <path id="mLine" stroke="#191924" stroke-width="22" d="M72 112V32c0-8.842 7.163-16 16-16 16 0 8 .1 40 .1s24-.1 40-.1c8.832 0 15.986 7.248 16 16v80"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 124">
+  <g id="letter-m" fill="none" fill-rule="evenodd">
+    <path id="line" stroke="#61C3FF" stroke-width="6" d="M192 120V32c0-13.255-10.745-24-24-24-24 0-8 .1-40 .1S112 8 88 8C74.745 8 64 18.745 64 32v88"/>
+    <path id="line" stroke="#FF1461" stroke-width="6" d="M80 120V32c0-4.421 3.582-8 8-8 13.397 0 8 .1 40 .1s26.73-.1 40-.1c4.424 0 8 3.65 8 8v88"/>
   </g>
 </svg>

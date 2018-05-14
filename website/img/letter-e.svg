@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 128">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 124">
   <g id="letter-e" fill="none" fill-rule="evenodd" stroke-linecap="square">
-    <path id="eLine" stroke="#191924" stroke-width="22" d="M48 80h64c8.837-.18 16-7.323 16-16V32c0-8.857-7.163-16-16-16H32c-8.837 0-16 7.143-16 16v64c0 8.857 7.163 16 16 16h96"/>
+    <path id="stroke" stroke="#61C3FF" stroke-width="6" d="M40 88h72c13.255 0 24-10.745 24-24V32c0-13.255-10.745-24-24-24H32C18.745 8 8 18.745 8 32v64c0 13.255 10.745 24 24 24h104"/>
+    <path id="stroke" stroke="#FF1461" stroke-width="6" d="M40 72h72a8 8 0 0 0 8-8V32a8 8 0 0 0-8-8H31.992a8 8 0 0 0-8 7.992l-.068 64c0 4.426 3.581 8.008 8 8.008H136"/>
   </g>
 </svg>
